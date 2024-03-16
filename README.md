@@ -1,4 +1,4 @@
-# Primi Passi
+# Node Basics
 
 **Initial commit**: 16/03/24
 
