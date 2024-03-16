@@ -1,0 +1,26 @@
+{
+  "name": "node_basics",
+  "version": "1.0.0",
+  "description": "Primi approcci con le basi di node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cyberfolk/node_basics.git"
+  },
+  "author": "cyberfolk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyberfolk/node_basics/issues"
+  },
+  "homepage": "https://github.com/cyberfolk/node_basics#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
