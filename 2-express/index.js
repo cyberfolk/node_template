@@ -6,47 +6,24 @@ const people = require('./people.json');
 const app = express();
 
 /**************************************
-* SEND                                *
+* SEND vs SENDFILE                    *
 **************************************/
-app.get('/about', (req, res) => {
-    res.send('<h1>About</h1>');
-})
+app.get('/about', (req, res) => { res.send('<h1>About</h1>'); })
+app.get('/', (req, res) => { res.sendFile('home.html', { root: __dirname + '/public' }); })
 
 /**************************************
-* SENDFILE                            *
-**************************************/
-app.get('/', (req, res) => {
-    res.sendFile('home.html', { root: __dirname + '/public' });
-})
-
-/**************************************
-* JSON                                *
+* JSON vs MAPPED-JSON                 *
 **************************************/
 app.get('/people', (req, res) => {
     res.json(people);
 })
 
-/**************************************
-* JSON MAPPED                         *
-**************************************/
 app.get('/people_mapped', (req, res) => {
     const mappedPeople = people.map((person) => {
         const { name, age, id } = person
         return { name, age, id }
     })
     res.json(mappedPeople);
-})
-
-/**************************************
-* JSON PARAMS                         *
-**************************************/
-app.get('/people/:id', (req, res) => {
-    const { id } = req.params // id (del url) è un char -> accertarsi che anche person.id (del json) sia un char
-    const personId = people.find((person) => person.id === id)
-    if (!personId) {
-        res.status(404).send({ "message": "Person not found", "code": 404 });
-    }
-    res.json(personId);
 })
 
 /**************************************
@@ -66,8 +43,7 @@ app.get('/search', (req, res) => {
         personFiltered = personFiltered.slice(0, Number(limit))
     }
     if (personFiltered.length < 1) {
-        // NB: return per evitare un conflitto con il res. della riga dopo
-        return res.status(200).send({ "success": true, "data": [] });
+        return res.status(200).send({ "success": true, "data": [] }); // NB: return per evitare un conflitto con il res. della riga dopo
     }
     res.status(200).send(personFiltered);
 })
