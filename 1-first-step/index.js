@@ -159,4 +159,46 @@ stream.on('data', (chunk) => {
     console.log(chunk);
 }) */
 
+/*****************************************************************************************************************
+*  FILE WATCHER + DEBOUNCE 
+* ---------------------------------------------------------------------------------------------------------------*
+* Il file ./cartella/prova.txt rimane in ascolto, e suoi cambiamenti verranno registrati con dei log             *
+* Ho inserito un timeout per limitare il debounce, ovvero un comportamento anomalo che si ha quando si salvano   *
+* i file che ci porterebbe a visualizzare più console log.                                                       *
+*****************************************************************************************************************/
+/* const fs = require('fs')
+let timeout;
 
+const opz = { persistent: true }
+fs.watch('./cartella/prova.txt', opz, (event, filename) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        console.log(`File ${filename} evento ${event} `)
+    }, 100); // Adjust debounce time as needed
+}) */
+
+/*****************************************************************************************************************
+*  FILE WATCHER => EVENT EMITTER 
+-----------------------------------------------------------------------------------------------------------------*
+* la classe fs.watch() restituisce un EventEmitter che emette un evento 'change' quando il file cambia.          *
+*****************************************************************************************************************/
+/* const fs = require('fs')
+
+const opz = { persistent: true }
+const monitorato = fs.watch('./cartella/prova.txt', opz)
+monitorato
+    .on('change', (evt, f) => console.log(`File ${f} evento ${evt} `))
+    .on('error', () => console.log("Errore nel file Monitorato"))
+    .on('close', () => console.log("File non più Monitorato"))
+setTimeout(() => monitorato.close(), 5000) */
+
+/*****************************************************************************************************************
+*  CHOKIDAR 
+-----------------------------------------------------------------------------------------------------------------*
+* Come f.watch ma gestisce il debounce e altre anomalie.                                                         *
+*****************************************************************************************************************/
+const chokidar = require('chokidar');
+
+chokidar.watch('./cartella/prova.txt').on('all', (event, path) => {
+    console.log(event, path);
+});
