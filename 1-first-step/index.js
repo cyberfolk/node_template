@@ -87,7 +87,7 @@ console.log("A-SYNC [7] -> [Flusso normal] -> FINE");
 */
 
 /****************************************************************************************************************
-*  MODULO HTTP
+*  MODULO HTTP - V1
 * --------------------------------------------------------------------------------------------------------------*
 * res.write() si usa per scrivere 1+ più pezzi di dati nella risposta senza chiuderla.                          *
 * res.end segnala la fine della risposta e può, può anche inviare un ultimo pezzo di dati prima di chiuderla.   *
@@ -95,12 +95,21 @@ console.log("A-SYNC [7] -> [Flusso normal] -> FINE");
 * Si usa res.end per chiudere la risposta. Se occorre inviare un singolo messaggio o pezzo di dati, si puo      *
 * semplicemente passarlo come parametro a res.end senza la necessità di chiamare prima res.write.               *
 *****************************************************************************************************************/
-/* const http = require('http')
+const http = require('http')
+const host = "localhost"
+const PORT = process.env.PORT || 3000;  // Cerco la variabile d'ambiente process.env.PORT, se non la trovo userò 3000.
+// Per settare process.env.PORT -> Da terminale: $ export PORT=5000
+// Per vedere  process.env.PORT -> Da terminale: $ echo $PORT
 const server = http.createServer((req, res) => {
-    console.log(req)
-    console.log(req.url)
+    if (req.url === "/favicon.ico") {
+        res.writeHead(204); // 204 No Content
+        return res.end();
+    }else{
+        console.log("Ricevuto richiesta: ", req.method, req.url);
+    }
     switch (req.url) {
         case "/":
+        case "/home":
             res.write("<h1>Home</h1>Benvenuto sul sito");
             res.end();
             break;
@@ -108,20 +117,40 @@ const server = http.createServer((req, res) => {
             res.write("<h1>Andrea</h1>");
             res.end();
             break;
-        case "/favicon.ico":
-            res.writeHead(204); // 204 No Content, o potresti servire un'icona reale qui
+        case "/luca":
+            res.setHeader("Content-Type", "text/plain; charset=UTF-8");
+            res.write("<h1>Luca</h1>");
+            res.write("<p>Qui uso il Content-Type: text/plain</p>");
             res.end();
             break;
+        case "/marco":
+            res.setHeader("Content-Type", "text/html; charset=UTF-8");
+            res.write("<h1>Luca</h1>");
+            res.write("<p>qui esplicito che uso il Content-Type: text/plain</p>");
+            res.write("<p>Anche se non è necessario</p>");
+            res.end();
+            break;
+        case "/matteo":
+            const body = "<h1>Matteo</h1><p>Questa e' la stringa che contiene il body della risposa effettuata con res.writeHead(...)</p>"
+            res.writeHead(200, {
+                "Content-Type": "text/html",
+                "Content-Length": Buffer.byteLength(body),
+            });
+            res.end(body);
+            break;
         default:
+            res.writeHead(404); 
             res.write(`<h1>Errore</h1><p>Torna alla <a href='/'>home</a> perche' la pagina non esiste</p>`);
+            res.end();
             break;
     }
-    res.end();
 });
-const PORT = 3000;  // Specifica la porta su cui il server dovrà ascoltare
-server.listen(PORT, () => {
+server.listen(PORT, host, () => {
     console.log(`Server in ascolto sulla porta ${PORT}`);
-}); */
+}); 
+server.on('error', (err) => {
+    console.log(err);
+})
 
 /****************************************************************************************************************
 *  NODEMON
@@ -197,8 +226,18 @@ setTimeout(() => monitorato.close(), 5000) */
 -----------------------------------------------------------------------------------------------------------------*
 * Come f.watch ma gestisce il debounce e altre anomalie.                                                         *
 *****************************************************************************************************************/
-const chokidar = require('chokidar');
+/* const chokidar = require('chokidar');
 
 chokidar.watch('./cartella/prova.txt').on('all', (event, path) => {
     console.log(event, path);
-});
+}); */
+
+/*****************************************************************************************************************
+*  URL 
+*****************************************************************************************************************/
+/* const url = require('url');
+const indirizzo = 'http://admin:123@www.sito.com:8000/p/a/t/h?id=1&nome=Anna#hash';
+const {URL} = url
+const urlObj = new URL(indirizzo)
+console.log(urlObj)
+console.log(url.parse(indirizzo)) */
