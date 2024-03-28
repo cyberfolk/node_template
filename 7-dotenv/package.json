@@ -1,0 +1,27 @@
+{
+  "name": "7-dotenv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cyberfolk/node_basics.git"
+  },
+  "author": "cyberfolk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyberfolk/node_basics/issues"
+  },
+  "homepage": "https://github.com/cyberfolk/node_basics#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
