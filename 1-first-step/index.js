@@ -9,8 +9,8 @@
 /*************************************************************************************************************
 *  MODULI CUSTOM
 *************************************************************************************************************/
-// const saluta = require('./utils');  // importa saluta() e invoco prova() che è eseguita nel modulo
-// const nomi   = require('./nomi');   // importa gli oggetti contenuti in "./nomi"
+// const saluta = require('./cartella/utils');  // importa saluta() e invoco prova() che è eseguita nel modulo
+// const nomi   = require('./cartella/nomi');   // importa gli oggetti contenuti in "./nomi"
 // saluta.saluta("mario");
 // saluta.saluta(nomi.persona4);
 // console.log("nomi", nomi)
