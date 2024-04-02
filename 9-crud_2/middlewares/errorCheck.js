@@ -12,9 +12,16 @@ const errorCheck = (err, req, res, next) => {
             status: 400,
             error: "Invalid JSON format in request body. Please check your JSON syntax."
         });
+    }else if (err.status === 500 || !err.status) {
+        // Gestisce errori interni del server o errori non specificati
+        return res.status(500).json({
+            status: 500,
+            error: "Internal Server Error. Please try again later."
+        });
+    } else {
+        // Passa all'errore successivo se ce n'è uno
+        next(err);
     }
-    // Passa all'errore successivo se ce n'è uno
-    next(err);
 };
 
-module.exports = { errorCheck };
+module.exports = errorCheck;
