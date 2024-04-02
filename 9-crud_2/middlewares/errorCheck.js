@@ -1,27 +1,34 @@
-/*****************************************************************************************************************
-*  MIDDLEWARE = CONTROLLO ERRORI                                                                                 *
-* ---------------------------------------------------------------------------------------------------------------*
-*  Intercetta errori di sintassi JSON nelle richieste                                                            *
-*****************************************************************************************************************/
+/******************************************************************************************************************
+ *  MIDDLEWARE = CONTROLLO ERRORI                                                                                 *
+ *****************************************************************************************************************/
 
-
+/**
+ * Middleware di gestione degli errori per intercettare e rispondere a errori comuni.
+ * Gestisce specificamente gli errori di parsing JSON e gli errori interni del server,
+ * fornendo risposte HTTP appropriate.
+ */
 const errorCheck = (err, req, res, next) => {
-    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-        // Invia una risposta personalizzata in caso di errore di parsing JSON
-        return res.status(400).json({
-            status: 400,
-            error: "Invalid JSON format in request body. Please check your JSON syntax."
-        });
-    }else if (err.status === 500 || !err.status) {
-        // Gestisce errori interni del server o errori non specificati
-        return res.status(500).json({
-            status: 500,
-            error: "Internal Server Error. Please try again later."
-        });
-    } else {
-        // Passa all'errore successivo se ce n'è uno
-        next(err);
-    }
+    console.error(err);
+
+    // Imposta un messaggio di errore predefinito basato sullo status, se non fornito
+    const defaultMessage = {
+        400: "Invalid request. Please check your input.",
+        401: "Unauthorized. You are not authorized to access this resource.",
+        403: "Forbidden. You do not have permission to perform this action.",
+        404: "Not Found. The requested resource was not found.",
+        422: "Unprocessable Entity. Check your input.",
+        500: "Internal Server Error. Please try again later."
+    };
+
+    // Se err non ha uno status, consideralo un Internal Server Error
+    const status = err.status || 500;
+    const errorResponse = {
+        success: false,
+        status: status,
+        error: err.message || defaultMessage[status]
+    };
+
+    return res.status(status).json(errorResponse);
 };
 
 module.exports = errorCheck;
