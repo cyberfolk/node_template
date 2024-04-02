@@ -1,4 +1,4 @@
-/*****************************************************************************************************************
+/******************************************************************************************************************
  *  CRUD + EXPRESS + MONGO (Atlas) + DOTENV                                                                       *
  * ---------------------------------------------------------------------------------------------------------------*
  *  NB: Eseguire con "$ NODE_ENV=development npm start" oppure "$npm start"                                       *
@@ -13,6 +13,7 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
+const immediateRequestLogger = require("./middlewares/immediateRequestLogger");
 const handleExitSignal = require("./utilities/handleExitSignal");
 const peopleRouter = require("./routes/people");
 const mongoClient = require("./connections/mongoClient");
@@ -25,6 +26,7 @@ process.on("SIGINT", () => handleExitSignal("SIGINT")); // SIGINT indica una ter
 process.on("SIGTERM", () => handleExitSignal("SIGTERM")); // SIGTERM indica una terminazione programmata e ordinata
 
 // Middleware
+app.use(immediateRequestLogger);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true })); // Consente di elaborare dati nel req.body
