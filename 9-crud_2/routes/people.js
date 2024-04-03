@@ -1,6 +1,7 @@
 const express = require("express");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 const asyncHandler = require("../utilities/asyncHandler");
+const createPeopleSearchQuery = require("../utilities/createPeopleSearchQuery");
 const mongoClient = require("../connections/mongoClient");
 const people = [];
 const routes = express.Router();
@@ -9,22 +10,30 @@ const peopleCollection = mongoClient.db("blog").collection("people");
 /*************************************************************
  *  GET - Tutte le persone                                   *
  ************************************************************/
-routes.get("/", (req, res) => {
+routes.get("/", asyncHandler(async (req, res, next) => {
+	const people = await peopleCollection.find().toArray();
+	if (people.length === 0) { return next(new ApiError("People not found", 404)); }
 	res.status(200).json({ success: true, status: 200, data: people });
-});
+}));
 
 /*************************************************************
- *  GET - Una persona specifica                              *
+ *  GET - Una o più persone da query                         *
+ ************************************************************/
+routes.get("/search", asyncHandler(async (req, res, next) => {
+	const query = createPeopleSearchQuery(req);
+	const people = await peopleCollection.find(query).toArray();
+	if (people.length === 0) { return next(new ApiError("People not found", 404)); }
+	res.status(200).json({ success: true, status: 200, data: people });
+}));
+
+/*************************************************************
+ *  GET - Una persona specifica da ID                            *
  ************************************************************/
 routes.get("/:id", asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
-	if (!ObjectId.isValid(id)) {
-		return next(new ApiPeopleError("Invalid ID format", 422));
-	}
+	if (!ObjectId.isValid(id)) { return next(new ApiError("Invalid ID format", 422)); }
 	const personId = await peopleCollection.findOne({ _id: new ObjectId(id) });
-	if (!personId) {
-		return next(new ApiPeopleError("Person not found", 404));
-	}
+	if (!personId) { return next(new ApiError("Person not found", 404)); }
 	res.status(200).json({ success: true, status: 200, data: personId });
 }));
 
@@ -70,7 +79,7 @@ routes.delete("/:id", (req, res) => {
 	res.status(200).json({ success: true, status: 200, data: people });
 });
 
-class ApiPeopleError extends Error {
+class ApiError extends Error {
 	constructor(message, status) {
 		super(message);
 		this.status = status;
