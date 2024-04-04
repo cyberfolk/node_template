@@ -82,13 +82,13 @@ routes.patch("/:id", asyncHandler(async (req, res, next) => {
 /***************************************************************************************
  * UPDATE => PUT: A Person by ID - (Sostituzione Completa)                             *
  * 200: Ritorna la persona con l'id specificato nei parameters dopo averla sostituita  *
- *      completamente coi dati contenuti nel body della request                         *
+ *      completamente coi dati contenuti nel body della request                        *
  **************************************************************************************/
 routes.put("/:id", asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
 	if (!ObjectId.isValid(id)) { return next(new ApiError("Invalid ID format", 422)); }
 	const replacementData = req.body;
-	// Validare qui se replacementData contiene tutti campi necessari per una "sostituzione completa".
+	// Validare qui se replacementData ha tutti campi necessari per una "sostituzione completa".
 	const ris = await peopleCollection.replaceOne({ _id: new ObjectId(id) }, replacementData);
 	if (ris.matchedCount === 0) { return next(new ApiError("Person not found", 404)); }
 	const people = await peopleCollection.findOne({ _id: new ObjectId(id) });
@@ -96,7 +96,8 @@ routes.put("/:id", asyncHandler(async (req, res, next) => {
 }));
 
 /***************************************************************************************
- * DELETE => DELETE: A Person by ID                                                    * * 200: Elimina la persona con l'id specificato nei parameters e ritona la conferma    *
+ * DELETE => DELETE: A Person by ID                                                    * 
+ * 200: Elimina la persona con l'id specificato nei parameters e ritona la conferma    *
  **************************************************************************************/
 routes.delete("/:id", asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
