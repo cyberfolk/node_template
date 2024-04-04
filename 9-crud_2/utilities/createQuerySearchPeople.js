@@ -1,5 +1,5 @@
 /******************************************************************************************************************
- *  CREATE-PEOPLE-SEARCH-QUERY => Query da usare nelle route della collection People
+ *  CREATE-QUERY-SEARCH-PEOPLE => Query da usare nelle route della collection People
  *
  * ****************************************************************************************************************
  * Crea un oggetto query per la ricerca sulla collection People, partendo dai parametri della request. Supporta la
@@ -12,7 +12,7 @@
  * e tutti gli altri parametri di query validi sono inclusi come sono.
  *****************************************************************************************************************/
 
-function createPeopleSearchQuery(req) {
+function createQuerySearchPeople(req) {
     return Object.entries(req.query).reduce((acc, [key, value]) => {
         if (value) { // Controlla se il valore associato alla chiave corrente esiste.
             if (key === "name") { // Se la chiave è 'name', trattala in modo speciale.
@@ -26,7 +26,7 @@ function createPeopleSearchQuery(req) {
     }, {}); // L'oggetto vuoto qui è il valore iniziale dell'accumulatore.
 }
 
-module.exports = createPeopleSearchQuery;
+module.exports = createQuerySearchPeople;
 
 /******************************************************************************************************************
  * PROCESSO:                                                                                                      *
