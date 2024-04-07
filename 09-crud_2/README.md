@@ -9,7 +9,9 @@ This project is a Node.js application that uses Express and MongoDB to implement
 -   **CRUD Operations**: Create, read, update, and delete people in the MongoDB database.
 -   **Request Logging**: Uses middleware to log incoming requests to the console.
 -   **Error Handling**: Custom error handling middleware to catch and respond to errors.
--   **Async Operations**: Utilizes async/await for asynchronous MongoDB operations.
+-   **MongoDB Connection**: A ready-to-use MongoDB client setup using the `mongodb` package, configurable via environment variables.
+-   **Async handler**: Utility for wrapping asynchronous route handlers, simplifying error handling.
+-   **Clean Shutdown**: Handles exit signals to close MongoDB connections cleanly before shutting down the application.
 
 ## Getting Started
 
@@ -20,25 +22,20 @@ This project is a Node.js application that uses Express and MongoDB to implement
 
 ### Installation
 
-1. Clone the repository:
+**Clone the repo and install package:**
 
-    ```bash
-    $ git clone https://github.com/cyberfolk/node_basics.git
-    ```
+```bash
+$ git clone https://github.com/cyberfolk/node_basics.git
+$ cd node_basics
+$ npm install
+```
 
-2. Install dependencies:
-    ```bash
-    $ cd node_basics
-    $ npm install
-    ```
-3. Set up environment variables:
+**Set up .env variables:**
 
--   Rename `.env.example` to `.env`
+-   Copy `.env` and create `.env.development`
 -   Update the variables with your MongoDB credentials and other configurations.
 
 ### Running the Application
-
-Start the application with:
 
 ```bash
 $ npm start //or
@@ -56,18 +53,6 @@ $ NODE_ENV=development npm start
 -   **PUT /api/people/:id**: Completely replace a person's information by their ID.
 -   **DELETE /api/people/:id**: Delete a person by their ID.
 -   **DELETE /api/people/delete**: Delete multiple people based on query parameters.
-
-## Error Handling
-
-Custom error responses are provided for various scenarios, including bad requests, unauthorized access, and server errors.
-
-## Logging
-
-Incoming requests are logged immediately, displaying the HTTP method, path, and timestamp.
-
-## Utilities
-
-Includes utilities for async error handling, creating search queries based on request parameters, and managing MongoDB connections.
 
 ## License
 

@@ -14,7 +14,7 @@ const morgan = require("morgan");
 const app = express();
 
 const immediateRequestLogger = require("./middlewares/immediateRequestLogger");
-const handleExitSignal = require("./utilities/handleExitSignal");
+const handleExitSignal = require("./utils/handleExitSignal");
 const peopleRouter = require("./routes/people");
 const mongoClient = require("./connections/mongoClient");
 const errorCheck = require("./middlewares/errorCheck");
