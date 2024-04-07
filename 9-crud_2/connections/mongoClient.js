@@ -10,7 +10,7 @@ const password = encodeURIComponent(process.env.DB_PASSWORD);
 const hostName = encodeURIComponent(process.env.DB_HOST);
 const dbName = encodeURIComponent(process.env.DB_NAME);
 const pckgName = require("../package.json").name;
-const appName = `&appName=${pckgName}`; // [Facoltativo] Facilita il monitoraggio delle connessioni nel cluster.
+const appName = `appName=${pckgName}`; // [Facoltativo] Facilita il monitoraggio delle connessioni nel cluster.
 const mongoURI = `mongodb+srv://${username}:${password}@${hostName}/${dbName}?retryWrites=true&w=majority&${appName}`;
 const mongoClient = new MongoClient(mongoURI);
 
