@@ -1,9 +1,10 @@
 {
-  "name": "5-middleware",
+  "name": "01-first-step",
   "version": "1.0.0",
-  "description": "",
+  "description": "Primi approcci con le basi di node",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
   "repository": {
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/cyberfolk/node_basics#readme",
   "dependencies": {
-    "express": "^4.19.1"
+    "chokidar": "^3.6.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

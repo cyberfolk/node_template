@@ -1,10 +1,9 @@
 {
-  "name": "node_basics",
+  "name": "08-mongo",
   "version": "1.0.0",
-  "description": "Primi approcci con le basi di node",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
   "repository": {
@@ -18,8 +17,9 @@
   },
   "homepage": "https://github.com/cyberfolk/node_basics#readme",
   "dependencies": {
-    "chokidar": "^3.6.0",
-    "lodash": "^4.17.21"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
