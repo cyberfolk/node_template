@@ -1,7 +1,10 @@
-# Appunti
+# Pacchetti interessanti
 
--   `debg` --> É un pacchetto da usare in ambiente di sviluppo
--   `validator` --> Altro pachetto interessante.
+-   `debg` --> Da usare in ambiente di sviluppo
+-   `validator` --> Valida dati in entrata.
+-   `uuid` --> Genera ID di sessione unico e casuale
+-   `express-session` --> Ci permette effettivamenti di lavorare con le sessioni
+-   `connect-mongo` --> Ci permette di salvare i dati delle sessioni non dentro un file ma dentro mongoDB
 
 ## Set variabili d'ambiente
 
