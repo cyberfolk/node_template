@@ -11,7 +11,7 @@ routes.get("/login", (req, res) => {
 })
 
 routes.get("/logout", (req, res) => {
-	req.session.colorSelected = false
+	req.session.isLogged = false
 	res.send()
 })
 

@@ -1,5 +1,5 @@
 /******************************************************************************************************************
- *  COOKIE SESSION                                                                                   *
+ *  AUTH SESSION WITH COOKIES                                                                                   *
  *****************************************************************************************************************/
 
 const MongoStore = require('connect-mongo');
@@ -11,7 +11,7 @@ const secretKey = encodeURIComponent(process.env.SESSION_SECRET_KEY)
 const dbName = encodeURIComponent(process.env.DB_NAME);
 
 
-function cookieSession(client) {
+function authSession(client) {
     return session({
         secret: secretKey,
         resave: false,
@@ -22,4 +22,4 @@ function cookieSession(client) {
     })
 }
 
-module.exports = cookieSession;
+module.exports = authSession;
