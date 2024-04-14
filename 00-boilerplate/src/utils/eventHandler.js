@@ -3,10 +3,9 @@
  *
  * ****************************************************************************************************************
  * Imposta i gestori di eventi per i segnali di chiusura pulita dell'applicazione.
- *
+ * 
  * @param {MongoClient} client - Il client MongoDB usato per gestire la connessione al database.
 *****************************************************************************************************************/
-
 function setupEventHandler(client) {
 	const handleSignal = createSignalHandler(client);
 	process.on("SIGINT", handleSignal("SIGINT")); // SIGINT indica una terminazione da parte dell'utente.

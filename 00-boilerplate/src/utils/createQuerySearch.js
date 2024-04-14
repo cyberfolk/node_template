@@ -1,8 +1,8 @@
 /******************************************************************************************************************
- *  Utils: createQuerySearchPeople => Query da usare nelle route della collection People
+ *  Utils: createQuerySearch => Query da usare nelle route delle collection
  *
  * ****************************************************************************************************************
- * Crea un oggetto query per la ricerca sulla collection People, partendo dai parametri della request. Supporta la
+ * Crea un oggetto query per la ricerca sulle collection, partendo dai parametri della request. Supporta la
  * ricerca case-insensitive per il name che inizia con un valore specificato e l'assegnazione diretta per tutti
  * gli altri parametri di ricerca validi.
  *
@@ -10,8 +10,7 @@
  * @returns {Object} Una di query per MongoDB, dove per `name` viene usata una reg-ex per la ricerca "inizia con" 
  * case-insensitive, e tutti gli altri parametri di query validi sono inclusi come sono.
  *****************************************************************************************************************/
-
-function createQuerySearchPeople(req) {
+function createQuerySearch(req) {
     return Object.entries(req.query).reduce((acc, [key, value]) => {
         if (value) { // Controlla se il valore associato alla chiave corrente esiste.
             if (key === "name") { // Se la chiave è 'name', trattala in modo speciale.
@@ -25,7 +24,7 @@ function createQuerySearchPeople(req) {
     }, {}); // L'oggetto vuoto qui è il valore iniziale dell'accumulatore.
 }
 
-module.exports = createQuerySearchPeople;
+module.exports = createQuerySearch;
 
 /******************************************************************************************************************
  * PROCESSO:                                                                                                      *

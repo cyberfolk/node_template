@@ -16,6 +16,7 @@ require('dotenv').config({
 const port = process.env.PORT || 3000; // Se non PORT fallback su 3000.
 const secretKey = encodeURIComponent(process.env.SESSION_SECRET_KEY)
 const dbConfig = {
+    collection: encodeURIComponent(process.env.DB_COLLECTION),
     username: encodeURIComponent(process.env.DB_USERNAME),
     password: encodeURIComponent(process.env.DB_PASSWORD),
     hostName: encodeURIComponent(process.env.DB_HOST),

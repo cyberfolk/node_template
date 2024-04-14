@@ -1,3 +1,10 @@
+/******************************************************************************************************************
+ *  Routes => Demo Auth Session 
+ *
+ * ****************************************************************************************************************
+ * Rotte di prova per testare il funzionamento dei coockie per l'autenticazione di la sessione.
+ *****************************************************************************************************************/
+
 const express = require("express");
 const routes = express.Router();
 
@@ -27,7 +34,6 @@ routes.get("/user", (req, res) => {
 		res.send("Non sei loggato...")
 	}
 })
-
 
 routes.get("/color", (req, res) => {
 	res.send(`Hai selezionato il colore ${req.session.colorSelected}`)

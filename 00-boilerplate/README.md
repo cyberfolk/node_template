@@ -13,7 +13,7 @@ This boilerplate provides a structured starting point for Node.js applications, 
 -   **Session Management**: Uses `express-session` and `connect-mongo` for handling user sessions with support for persistent sessions stored in MongoDB.
 -   **Clean Shutdown**: Handles exit signals to close MongoDB connections cleanly before shutting down the application.
 -   **Authentication and Session Routes**: Provides basic routes for session management and user authentication demonstrations.
--   **People API Routes**: Provides a set of RESTful API routes (`/api/people`) for performing CRUD operations on the `people` collection in MongoDB, including searching, adding, updating, and deleting records.
+-   **Resource API Routes**: Provides modular RESTful API routes `/api/<resource>` for CRUD operations on MongoDB collections, supporting search, add, update, and delete functionalities. This structure allows easy adaptation for different resources, ensuring flexible and scalable management.
 
 ## Directory Structure
 
