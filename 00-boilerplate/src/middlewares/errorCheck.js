@@ -1,11 +1,8 @@
 /******************************************************************************************************************
- *  MIDDLEWARE = CONTROLLO ERRORI                                                                                 *
- *****************************************************************************************************************/
-
-/******************************************************************************************************************
- * Middleware di gestione degli errori per intercettare e rispondere a errori comuni.
- * Gestisce specificamente gli errori di parsing JSON e gli errori interni del server,
- * fornendo risposte HTTP appropriate.
+ *  Middleware => Controllo Errori 
+ *
+ * ****************************************************************************************************************
+ * Intercetta errori comuni, errori di parsing JSON ed internal-serve-error, ritornando risposte HTTP appropriate.
  *****************************************************************************************************************/
 const errorCheck = (err, req, res, next) => {
     console.error(err);

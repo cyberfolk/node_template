@@ -12,15 +12,16 @@ const { port, dbConfig, secretKey } = require('./src/config/config');
 const createMongoClient = require("./src/connections/mongoClient");
 const connectDB = require("./src/connections/connectDB");
 const directLogger = require("./src/middlewares/directLogger");
-//const setupEventHandler = require("./src/utils/eventHandler")(mongoClient);
-const createAauthSession = require("./src/middlewares/authSession");
+const setupEventHandler = require("./src/utils/eventHandler");
+const createAuthSession = require("./src/middlewares/authSession");
 const errorCheck = require("./src/middlewares/errorCheck");
 const demoRouter = require("./src/routes/demoAuthSession");
 const createPeopleRouter = require("./src/routes/people");
 
 const mongoClient = createMongoClient(dbConfig);
-const authSession = createAauthSession(mongoClient, dbConfig.dbName, secretKey);
+const authSession = createAuthSession(mongoClient, dbConfig.dbName, secretKey);
 const peopleRouter = createPeopleRouter(mongoClient);
+setupEventHandler(mongoClient);
 
 // Middleware
 app.use(directLogger);
@@ -31,7 +32,6 @@ app.use(authSession)
 app.use("/", demoRouter);
 app.use("/api/people", peopleRouter);
 app.use(errorCheck); // Controllo errori da posizionare per ultimo.
-
 
 async function startServer() {
 	await connectDB(mongoClient);

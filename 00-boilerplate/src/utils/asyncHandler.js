@@ -1,5 +1,5 @@
 /******************************************************************************************************************
- *  ASYNCANDLER => WRAPPER per gestire gli errori
+ *  Utils: AsyncHandler => Wrapper per gestire gli errori
  *
  * ****************************************************************************************************************
  * Function Utility per la gestione asincrona degli errori in Express. Avvolge una funzione di route asincrona e
@@ -15,13 +15,14 @@ function asyncHandler(fn) {
 	};
 }
 
-// VERSIONE ALTERNATIVA
-// const asyncHandler = (fn) => (req, res, next) => 
-// 	Promise.resolve(fn(req, res, next)).catch(next);
-
 module.exports = asyncHandler;
 
 /******************************************************************************************************************
+ * VERSIONE ALTERNATIVA                                                                                           *
+ * 	const asyncHandler = (fn) => (req, res, next) =>                                                              *
+ *     	Promise.resolve(fn(req, res, next)).catch(next);                                                          * 
+ *                                                                                                                *
+ * ****************************************************************************************************************
  * PROCESSO:                                                                                                      *
  * La funzione asyncHandler è un middleware di utilità progettato per applicazioni Express.js. Il suo scopo è     *
  * gestire in modo elegante le funzioni asincrone all'interno delle route, catturando qualsiasi errore che si     *

@@ -1,5 +1,5 @@
 /******************************************************************************************************************
- *  CREATE-QUERY-SEARCH-PEOPLE => Query da usare nelle route della collection People
+ *  Utils: createQuerySearchPeople => Query da usare nelle route della collection People
  *
  * ****************************************************************************************************************
  * Crea un oggetto query per la ricerca sulla collection People, partendo dai parametri della request. Supporta la
@@ -7,9 +7,8 @@
  * gli altri parametri di ricerca validi.
  *
  * @param {Object} req - L'oggetto richiesta Express, che contiene i parametri di query.
- * @returns {Object} Un oggetto di query per MongoDB, dove per `name` viene utilizzata
- * una espressione regolare per supportare la ricerca "inizia con" case-insensitive,
- * e tutti gli altri parametri di query validi sono inclusi come sono.
+ * @returns {Object} Una di query per MongoDB, dove per `name` viene usata una reg-ex per la ricerca "inizia con" 
+ * case-insensitive, e tutti gli altri parametri di query validi sono inclusi come sono.
  *****************************************************************************************************************/
 
 function createQuerySearchPeople(req) {

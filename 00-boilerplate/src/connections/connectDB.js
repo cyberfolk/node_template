@@ -1,9 +1,7 @@
 /******************************************************************************************************************
- * CONNECT DB: Crea e configura un'istanza di MongoClient.                                                        *
- ******************************************************************************************************************/
-
-
-/******************************************************************************************************************
+ *  Connect => clientDB
+ *
+ * ****************************************************************************************************************
  * Si connette asincronamente a MongoDB utilizzando l'istanza di MongoClient fornita.
  * Registra lo stato della connessione e gestisce eventuali errori loggandoli e chiudendo il client.
  *
