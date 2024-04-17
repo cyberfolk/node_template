@@ -14,7 +14,7 @@ This boilerplate provides a structured starting point for Node.js applications, 
 
 ## Directory Structure
 
-`00-boilerplate/`  
+`boilerplate/`  
 │  
 ├─ `src/` _- Source code for the application._  
 │ ├─ `connections/` _- MongoDB client setup and configuration._  

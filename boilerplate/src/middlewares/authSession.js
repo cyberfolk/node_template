@@ -1,5 +1,5 @@
-const MongoStore = require('connect-mongo');
-const session = require('express-session');
+const MongoStore = require('connect-mongo'); // Ci permette di salvare i dati delle sessioni non dentro un file ma dentro mongoDB
+const session = require('express-session'); // Ci permette effettivamenti di lavorare con le sessioni
 const { v4: uuidv4 } = require('uuid');	// Recupero la funzione v4 e l'assegno alla variabile uuidv4
 
 /******************************************************************************************************************
