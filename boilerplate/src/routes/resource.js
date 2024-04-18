@@ -4,7 +4,7 @@ const { ObjectId } = require("mongodb");
 const express = require("express");
 
 /******************************************************************************************************************
- *  Routes: Factory => CRUD generiche da applicare su un qualunque modello. 
+ *  Routes Factory => CRUD generiche da applicare su un qualunque modello. 
  *
  * ****************************************************************************************************************
  * Questo router è progettato per essere flessibile e può essere utilizzato per qualsiasi risorsa
@@ -13,8 +13,7 @@ const express = require("express");
  * @param {MongoClient} mongoClient - Il client MongoDB.
  * @param {string} dbName - Il nome del database da utilizzare.
  * @param {string} collection - Il nome della collezione della risorsa da gestire.
- * @returns {Router} Un router Express configurato per la risorsa specificata, pronto per essere
- * utilizzato per eseguire operazioni CRUD generiche su di essa.
+ * @returns {routes} Un router Express che permette di eseguire CRUD generiche sulla risorsa specificata.
  ******************************************************************************************************************/
 function createResourcesRouter(mongoClient, dbName, collection) {
 	const routes = express.Router();

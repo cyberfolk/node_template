@@ -4,9 +4,10 @@ const { MongoClient } = require("mongodb");
  *  Connect: Factory => MongoClient 
  *
  * ****************************************************************************************************************
- * Crea e configura un'istanza di MongoClient.
+ * Crea un'istanza di MongoClient configurandola coi dati del parametro dbConfig. 
  *
- * @param {Object} dbConfig - Configurazioni per il database, incluse username, password, hostName e dbName.
+ * @param {Object} dbConfig - Configurazioni per il database [username, password, hostName e dbName].
+ *                            Dati personali che arrivano dal file di configurazione.
  * @return {MongoClient} Istanza configurata di MongoClient.
  *****************************************************************************************************************/
 function createMongoClient(dbConfig) {
@@ -24,6 +25,7 @@ function createMongoClient(dbConfig) {
 module.exports = createMongoClient;
 
 /******************************************************************************************************************
+ * INFORMAZIONI SUI PARAMETRI MONGO-URI                                                                           *
  * mongodb+srv -------> Protocollo per una connessione semplificata a cluster MongoDB.                            *
  * retryWrites=true" -> Abilita il ritentativo automatico di operazioni di scrittura che falliscono.              * 
  * w=majority --------> Accerta che le operazioni di scrittura siano replicata su + nodi prima di confermarle.    *

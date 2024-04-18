@@ -3,6 +3,7 @@
  *
  * ****************************************************************************************************************
  * Intercetta errori comuni, errori di parsing JSON ed internal-serve-error, ritornando risposte HTTP appropriate.
+ * NB: Da inserire sempre come ultimo middleware della catena.
  *****************************************************************************************************************/
 const errorCheck = (err, req, res, next) => {
     console.error(err);

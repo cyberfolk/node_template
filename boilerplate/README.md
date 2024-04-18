@@ -2,30 +2,28 @@
 
 ## Overview
 
-This boilerplate provides a structured starting point for Node.js applications, incorporating best practices and common utilities for session management, error handling, MongoDB connections, configuration management, and logging middleware.
+This boilerplate consists of independent modules where I have divided the various topics I studied. It serves as a starting point for Node.js applications.
 
-## Features
+## Custom Modules
 
--   **Request Logging**: Immediate request logging middleware for tracing HTTP requests using `morgan` and a custom `directLogger`.
--   **Error Handling**: Custom error handling middleware to catch and respond to errors comprehensively.
--   **MongoDB Connection**: A robust MongoDB client setup using the `mongodb` package, configurable via environment variables and capable of handling connection interruptions.
--   **Async Handler**: Utility for wrapping asynchronous route handlers, simplifying error handling across asynchronous operations.
--   **Session Management**: Uses `express-session` and `connect-mongo` for handling user sessions with support for persistent sessions stored in MongoDB.
--   **Clean Shutdown**: Handles exit signals to close MongoDB connections cleanly before shutting down the application.
--   **Authentication and Session Routes**: Provides basic routes for session management and user authentication demonstrations.
--   **Resource API Routes**: Provides modular RESTful API routes `/api/<resource>` for CRUD operations on MongoDB collections, supporting search, add, update, and delete functionalities. This structure allows easy adaptation for different resources, ensuring flexible and scalable management.
+-   **[Direct Logging](./src/middlewares/directLogger.js)** &rarr; Middleware to immediately log incoming request details.
+-   **[Error Check](./src/middlewares/errorCheck.js)** &rarr; Middleware to intercept errors returning appropriate HTTP responses.
+-   **[MongoDB Client](./src/connections/mongoClient.js)** &rarr; Factory that generates a MongoClient instance from configuration parameters.
+-   **[Async Handler](./src/utils/asyncHandler.js)** &rarr; Utility to encapsulate asynchronous route handlers, simplifying error management in asynchronous operations.
+-   **[Auth Session](./src/middlewares/authSession.js)** &rarr; Factory that returns middleware for managing sessions through cookies and storage in MongoDB.
+-   **[Clean Shutdown](./src/utils/eventHandler.js)** &rarr; Sets event handlers for clean shutdown signals of the application
+-   **[Demo Auth Session](./src/routes/demoAuthSession.js)** &rarr; Provides basic routes for session management and user authentication demonstrations.
+-   **[Resource API](./src/routes/resource.js)** &rarr; Factory who provides modular RESTful API routes `/api/<resource>` for CRUD operations on MongoDB collections, supporting search, add, update, and delete functionalities. This structure allows easy adaptation for different resources, ensuring flexible and scalable management.
 
 ## Directory Structure
 
 `boilerplate/`  
-│  
 ├─ `src/` _- Source code for the application._  
 │ ├─ `config/` _- Configuration management and environment setup._  
 │ ├─ `connections/` _- MongoDB client setup and database connection utility._  
 │ ├─ `middlewares/` _- Middleware for error handling, request logging, and session management._  
 │ ├─ `routes/` _- Express routes definitions for demo authentication and user management._  
 │ └─ `utils/` _- Utilities like the async handler wrapper, query builders, and signal handling._  
-│  
 ├─ `.env` _- Template for environment variables (copy to `.env.development` for development)._  
 ├─ `server.js` _- Entry point for the application._  
 └─ `package.json` _- Project metadata and dependencies._

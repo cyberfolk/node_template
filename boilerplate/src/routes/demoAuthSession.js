@@ -2,7 +2,7 @@
  *  Routes => Demo Auth Session 
  *
  * ****************************************************************************************************************
- * Rotte di prova per testare il funzionamento dei coockie per l'autenticazione di la sessione.
+ * Rotte di prova per testare il funzionamento dei coockie per l'autenticazione di sessione.
  *****************************************************************************************************************/
 
 const express = require("express");

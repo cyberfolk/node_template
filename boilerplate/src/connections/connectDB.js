@@ -1,5 +1,5 @@
 /******************************************************************************************************************
- *  Connect => clientDB
+ *  Connections => connectDB
  *
  * ****************************************************************************************************************
  * Si connette asincronamente a MongoDB utilizzando l'istanza di MongoClient fornita.
@@ -9,7 +9,7 @@
  ******************************************************************************************************************/
 async function connectDB(mongoClient) {
     try {
-        await mongoClient.connect(); // Ritorna una promise --> necessario usare await --> necessario usare funzione async
+        await mongoClient.connect(); // Return promise --> richiede await --> richiede function async
         console.log("Siamo connessi a MongoDB Atlas!");
     } catch (err) {
         console.error("Errore Connessione:", err);

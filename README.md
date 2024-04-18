@@ -9,7 +9,6 @@
 ## Contenuto
 
 `node_basics/`  
-│  
 ├─ `boilerplate/` _- Codice riutilizzabile e modulare che integra svariati argomenti._  
 ├─ `step-by-step/` - _Raccolta dei primi esercizi_  
 │ ├─ `01-first-step/` → _Variabili globali e importazione di moduli_  
@@ -26,7 +25,7 @@
 
 ## Inizializzare Progetto Node.js
 
-1. **Apri il Terminale e inizializza il progetto**
+1. **Aprire Terminale e inizializzare il progetto**
 
     ```bash
     mkdir <nome-progetto>
@@ -37,7 +36,7 @@
     echo "node_modules" > .gitignore
     ```
 
-2. **Modifica il file `package.json`** per aggiungere gli script di avvio:
+2. **Modificare file `package.json`** per aggiungere gli script di avvio:
     ```json
     "scripts": { "start": "nodemon index.js" },
     ```

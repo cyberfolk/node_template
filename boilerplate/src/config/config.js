@@ -2,7 +2,7 @@
  *  Confing => dotenv + process.env
  * 
  * ****************************************************************************************************************
- * Questo file utilizza il pacchetto `dotenv` per caricare le variabili di ambiente dai file `.env`
+ * Questo file utilizza il pacchetto `dotenv` per caricare le variabili d'ambiente dai file `.env`
  * Uso: Eseguire l'app con le impostazioni specifiche dell'ambiente che desideri buildare:
  *   - con `NODE_ENV=development npm start` l'app leggerà il file .env.development attivando l'ambiente di sviluppo.
  *   - con `NODE_ENV=production npm start` l'app leggerà il file .env.production attivando l'ambiente di produzione.
