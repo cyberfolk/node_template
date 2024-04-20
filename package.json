@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "node_template",
   "version": "1.0.1",
   "description": "",
   "main": "server.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cyberfolk/node_basics.git"
+    "url": "git+ssh://git@github.com/cyberfolk/node_template.git"
   },
   "author": "cyberfolk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cyberfolk/node_basics/issues"
+    "url": "https://github.com/cyberfolk/node_template/issues"
   },
-  "homepage": "https://github.com/cyberfolk/node_basics#readme",
+  "homepage": "https://github.com/cyberfolk/node_template#readme",
   "dependencies": {
     "connect-mongo": "^5.1.0",
     "dotenv": "^16.4.5",
