@@ -6,7 +6,7 @@
  * NB: Per validare i token usare: https://jwt.io/
  *****************************************************************************************************************/
 const express = require("express");
-const { verifyToken, signToken, deleteToken } = require("../middlewares/authJwt");
+const { verifyToken, signToken, deleteToken } = require("../middlewares/auth-jwt");
 const routes = express.Router();
 
 routes.get("/login", signToken, (req, res) => {
