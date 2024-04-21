@@ -1,31 +1,34 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const ms = require("ms"); // Importa ms
+const path = require("path");
 
-function createJWTMiddleware(config) {
-    const options = { expiresIn: config.expiresIn, algorithm: config.algorithm };
-    // algorithm: 'HS256' -> Chiave simmetrica. Impostato di [Default] 
-    // algorithm: 'RS256' -> Chiave assimetrica
+function createJwtMiddleware(config) {
+    const { algorithm, expiresIn, secretKey } = config
+    const options = { expiresIn, algorithm };
 
-    const privateKey = config.algorithm === 'RS256' ? fs.readFileSync('./rsa.private', 'utf8') : process.env.SECRET_KEY_JWT;
-    const publicKey = config.algorithm === 'RS256' ? fs.readFileSync('./rsa.public', 'utf8') : privateKey;
+    let privateKey, publicKey;
 
+    if (algorithm === 'RS256') {
+        privateKey = fs.readFileSync(path.join(__dirname, '../../rsa.private'), 'utf8');
+        publicKey = fs.readFileSync(path.join(__dirname, '../../rsa.public'), 'utf8');
+    } else {
+        privateKey = publicKey = secretKey;
+    }
+
+    // Impostare i cookieSettings evita che il cookie di sessione scompaia alla chiusura del browser
+    const cookieSettings = {
+        expires: new Date(Date.now() + ms(expiresIn)), // Il cookie scompare passato il tempo di expires
+        httpOnly: true, // Mitiga attacchi XSS
+        secure: false   // Da settare a true in fase di produzione
+    }
 
     /**
      * Firma un nuovo token JWT con payload utente e lo invia come cookie nella risposta.
      */
     function signToken(req, res, next) {
-        const payload = { id: 1, userType: 'admin', theme: 'light' }
-        // Impostare i cookieSettings evita che il cookie di sessione scompaia alla chiusura del browser
-        const cookieSettings = {
-            expires: new Date(Date.now() + 30 * 1000), // Il cookie scompare passato il tempo di expires (30s)
-            httpOnly: true, // Mitiga attacchi XSS
-            secure: false   // Da settare a true in fase di produzione
-        }
-        const prv_key = fs.readFileSync('./rsa.private', 'utf8')
-        // const secret_key = process.env.SECRET_KEY_JWT;
-        // const token = jwt.sign(payload, secret_key, options)
-        const token = jwt.sign(payload, prv_key, options)
+        const payload = { id: 1, userType: 'admin', theme: 'dark' }
+        const token = jwt.sign(payload, privateKey, options)
         res.cookie('token', token, cookieSettings)
         next()
     }
@@ -38,8 +41,7 @@ function createJWTMiddleware(config) {
         const token = req.cookies.token;
         if (!token) return res.status(401).send("Non sei loggato, nessun token fornito...")
         try {
-            const pub_key = fs.readFileSync('./rsa.public', 'utf8')
-            const payload = jwt.verify(token, pub_key, options)
+            const payload = jwt.verify(token, publicKey, options)
             req.user = payload
             next()
         } catch {
@@ -49,13 +51,10 @@ function createJWTMiddleware(config) {
 
     /**
      * Elimina il token JWT impostando la scadenza del cookie su una data passata.
+     * Questo middleware è fallace perchè elimina il cookie ma non elimina il token
      */
     function deleteToken(req, res, next) {
-        const cookieSettings = { // Reimposto il cookie nel passato così da eliminarlo.
-            expires: new Date(0), // Data nel passato
-            httpOnly: true, // mitiga attacchi XSS
-            secure: false // Da settare a true in produzione
-        }
+        cookieSettings.expires = new Date(0); // Reimposto il cookie nel passato così da eliminarlo.
         res.cookie('token', '', cookieSettings)
         next()
     }
@@ -63,4 +62,4 @@ function createJWTMiddleware(config) {
     return { signToken, verifyToken, deleteToken };
 }
 
-module.exports = createJWTMiddleware;
+module.exports = createJwtMiddleware;

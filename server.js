@@ -8,10 +8,11 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
-const { port, dbConfig, secretKey } = require('./src/config/config');
-const createResourceRouter = require("./src/routes/api-resource")
+// My Modules
+const { port, secretKeySession, secretKeyJwt, dbConfig } = require('./src/config/config');
+const createResourceRouter = require("./src/routes/api-resource");
+const createJwtMiddleware = require('./src/middlewares/auth-jwt');
 const createMongoClient = require("./src/connections/mongoClient");
-const createJWTMiddleware = require('./src/middlewares/auth-jwt');
 const setupEventHandler = require("./src/utils/eventHandler");
 const createAuthSession = require("./src/middlewares/auth-session");
 const demoSessionRouter = require("./src/routes/demo-auth-session");
@@ -20,14 +21,16 @@ const directLogger = require("./src/middlewares/directLogger");
 const errorCheck = require("./src/middlewares/errorCheck");
 const connectDB = require("./src/connections/connectDB");
 
+// Factory
 const mongoClient = createMongoClient(dbConfig);
-const authSession = createAuthSession(mongoClient, dbConfig.dbName, secretKey);
+const authSession = createAuthSession(mongoClient, dbConfig.dbName, secretKeySession);
 const peopleRouter = createResourceRouter(mongoClient, dbConfig.dbName, dbConfig.collection);
-const jwtMiddleware = createJWTMiddleware({ algorithm: 'RS256', expiresIn: '1h' });
+const jwtMiddleware = createJwtMiddleware({ algorithm: 'RS256', expiresIn: '1h', secretKey: secretKeyJwt });
 const demoJwtRouter = createJwtRouter(jwtMiddleware);
 setupEventHandler(mongoClient);
 
 app.set("view engine", "ejs");
+
 // Middleware
 app.use(express.static("public"));
 app.use(directLogger);
@@ -36,10 +39,10 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true })); // Consente di elaborare dati nel req.body
 app.use(cookieParser()); // Consente di accedere al parametrocookie delle request
 app.use(authSession)
-app.use("/demo/auth", demoSessionRouter);
 app.use("/demo/jwt", demoJwtRouter);
+app.use("/demo/auth", demoSessionRouter);
 app.use("/api/people", peopleRouter);
-app.use(errorCheck); // Controllo errori da posizionare per ultimo.
+app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 
 async function startServer() {
 	await connectDB(mongoClient);

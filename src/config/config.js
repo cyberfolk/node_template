@@ -14,7 +14,8 @@ require('dotenv').config({
 
 // Recupero le variabili d'ambiente
 const port = process.env.PORT || 3000; // Se non PORT fallback su 3000.
-const secretKey = encodeURIComponent(process.env.SECRET_KEY_SESSION)
+const secretKeySession = encodeURIComponent(process.env.SECRET_KEY_SESSION)
+const secretKeyJwt = encodeURIComponent(process.env.SECRET_KEY_JWT)
 const dbConfig = {
     collection: encodeURIComponent(process.env.DB_COLLECTION),
     username: encodeURIComponent(process.env.DB_USERNAME),
@@ -23,4 +24,4 @@ const dbConfig = {
     dbName: encodeURIComponent(process.env.DB_NAME),
 }
 
-module.exports = { port, secretKey, dbConfig };
+module.exports = { port, secretKeySession, secretKeyJwt, dbConfig };
