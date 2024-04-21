@@ -11,10 +11,11 @@ const app = express();
 const { port, dbConfig, secretKey } = require('./src/config/config');
 const createResourceRouter = require("./src/routes/api-resource")
 const createMongoClient = require("./src/connections/mongoClient");
+const createJWTMiddleware = require('./src/middlewares/auth-jwt');
 const setupEventHandler = require("./src/utils/eventHandler");
 const createAuthSession = require("./src/middlewares/auth-session");
-const demoAuthRouter = require("./src/routes/demo-auth-session");
-const demoJwtRouter = require("./src/routes/demo-auth-jwt");
+const demoSessionRouter = require("./src/routes/demo-auth-session");
+const createJwtRouter = require("./src/routes/demo-auth-jwt");
 const directLogger = require("./src/middlewares/directLogger");
 const errorCheck = require("./src/middlewares/errorCheck");
 const connectDB = require("./src/connections/connectDB");
@@ -22,6 +23,8 @@ const connectDB = require("./src/connections/connectDB");
 const mongoClient = createMongoClient(dbConfig);
 const authSession = createAuthSession(mongoClient, dbConfig.dbName, secretKey);
 const peopleRouter = createResourceRouter(mongoClient, dbConfig.dbName, dbConfig.collection);
+const jwtMiddleware = createJWTMiddleware({ algorithm: 'RS256', expiresIn: '1h' });
+const demoJwtRouter = createJwtRouter(jwtMiddleware);
 setupEventHandler(mongoClient);
 
 app.set("view engine", "ejs");
@@ -33,7 +36,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true })); // Consente di elaborare dati nel req.body
 app.use(cookieParser()); // Consente di accedere al parametrocookie delle request
 app.use(authSession)
-app.use("/demo/auth", demoAuthRouter);
+app.use("/demo/auth", demoSessionRouter);
 app.use("/demo/jwt", demoJwtRouter);
 app.use("/api/people", peopleRouter);
 app.use(errorCheck); // Controllo errori da posizionare per ultimo.

@@ -1,46 +1,66 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const options = {
-    expiresIn: '30s',
-    algorithm: 'RS256', // Algoritmo a chiave assimetrica
-    //algorithm: 'HS256' // [Default] Se non specificato è sempre HS256 
-};
+const ms = require("ms"); // Importa ms
 
-function verifyToken(req, res, next) {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).send("Non sei loggato, nessun token fornito...")
-    try {
-        const pub_key = fs.readFileSync('./rsa.public', 'utf8')
-        req.user = jwt.verify(token, pub_key, options) // dentro re.user ci sarà il payload
+function createJWTMiddleware(config) {
+    const options = { expiresIn: config.expiresIn, algorithm: config.algorithm };
+    // algorithm: 'HS256' -> Chiave simmetrica. Impostato di [Default] 
+    // algorithm: 'RS256' -> Chiave assimetrica
+
+    const privateKey = config.algorithm === 'RS256' ? fs.readFileSync('./rsa.private', 'utf8') : process.env.SECRET_KEY_JWT;
+    const publicKey = config.algorithm === 'RS256' ? fs.readFileSync('./rsa.public', 'utf8') : privateKey;
+
+
+    /**
+     * Firma un nuovo token JWT con payload utente e lo invia come cookie nella risposta.
+     */
+    function signToken(req, res, next) {
+        const payload = { id: 1, userType: 'admin', theme: 'light' }
+        // Impostare i cookieSettings evita che il cookie di sessione scompaia alla chiusura del browser
+        const cookieSettings = {
+            expires: new Date(Date.now() + 30 * 1000), // Il cookie scompare passato il tempo di expires (30s)
+            httpOnly: true, // Mitiga attacchi XSS
+            secure: false   // Da settare a true in fase di produzione
+        }
+        const prv_key = fs.readFileSync('./rsa.private', 'utf8')
+        // const secret_key = process.env.SECRET_KEY_JWT;
+        // const token = jwt.sign(payload, secret_key, options)
+        const token = jwt.sign(payload, prv_key, options)
+        res.cookie('token', token, cookieSettings)
         next()
-    } catch {
-        return res.status(401).send("Non sei loggato, token non valido o scaduto...")
     }
+
+    /**
+     * Verifica la validità del token JWT prelevandolo dai cookie della request, se il token è validato 
+     * si preleva il suo payload e lo si aggiunge nella request.
+     */
+    function verifyToken(req, res, next) {
+        const token = req.cookies.token;
+        if (!token) return res.status(401).send("Non sei loggato, nessun token fornito...")
+        try {
+            const pub_key = fs.readFileSync('./rsa.public', 'utf8')
+            const payload = jwt.verify(token, pub_key, options)
+            req.user = payload
+            next()
+        } catch {
+            return res.status(401).send("Non sei loggato, token non valido o scaduto...")
+        }
+    }
+
+    /**
+     * Elimina il token JWT impostando la scadenza del cookie su una data passata.
+     */
+    function deleteToken(req, res, next) {
+        const cookieSettings = { // Reimposto il cookie nel passato così da eliminarlo.
+            expires: new Date(0), // Data nel passato
+            httpOnly: true, // mitiga attacchi XSS
+            secure: false // Da settare a true in produzione
+        }
+        res.cookie('token', '', cookieSettings)
+        next()
+    }
+
+    return { signToken, verifyToken, deleteToken };
 }
 
-function signToken(req, res, next) {
-    const payload = { id: 1, userType: 'admin', theme: 'dark' }
-    const secret_key = process.env.JWT_SECRET_KEY;
-    const cookieSettings = { // Setto questo oggetto per impedire che il cookie scompaia quando si chiude il browser
-        expires: new Date(Date.now() + 30 * 1000), // il cookie scompare passato il tempo di expires
-        httpOnly: true, // mitiga attacchi XSS
-        secure: false // Da settare a true in fase di produzione
-    }
-    const prv_key = fs.readFileSync('./rsa.private', 'utf8')
-    //const token = jwt.sign(payload, secret_key, options)
-    const token = jwt.sign(payload, prv_key, options)
-    res.cookie('token', token, cookieSettings)
-    next()
-}
-
-function deleteToken(req, res, next) {
-    const cookieSettings = { // Reimposto il cookie nel passato così da eliminarlo.
-        expires: new Date(0), // Data nel passato
-        httpOnly: true, // mitiga attacchi XSS
-        secure: false // Da settare a true in fase di produzione
-    }
-    res.cookie('token', '', cookieSettings)
-    next()
-}
-
-module.exports = { verifyToken, signToken, deleteToken }
+module.exports = createJWTMiddleware;
