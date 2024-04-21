@@ -14,7 +14,7 @@ function createMongoClient(dbConfig) {
     const pckgName = require("../../package.json").name;
     const appName = `appName=${pckgName}`; // [Opzionale] Facilita il monitoraggio delle connessioni nel cluster.
     const credentials = `${dbConfig.username}:${dbConfig.password}`;
-    const hostDetails = `${dbConfig.hostName}/${dbConfig.dbName}`;
+    const hostDetails = `${dbConfig.hostName}`;
     const options = "retryWrites=true&w=majority&" + appName;
     const mongoURI = `mongodb+srv://${credentials}@${hostDetails}?${options}`;
 

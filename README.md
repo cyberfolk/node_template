@@ -10,20 +10,25 @@ This boilerplate is composed of independent modules, each dedicated to a differe
 -   **[Error Check](./src/middlewares/errorCheck.js)** &rarr; Middleware to intercept errors returning appropriate HTTP responses.
 -   **[MongoDB Client](./src/connections/mongoClient.js)** &rarr; Factory that generates a MongoClient instance from configuration parameters.
 -   **[Async Handler](./src/utils/asyncHandler.js)** &rarr; Utility to encapsulate asynchronous route handlers, simplifying error management in asynchronous operations.
--   **[Auth Session](./src/middlewares/authSession.js)** &rarr; Factory that returns middleware for managing sessions through cookies and storage in MongoDB.
+-   **[Auth Session](./src/middlewares/auth-session.js)** &rarr; Factory that returns middleware for managing sessions through cookies and storage in MongoDB.
+-   **[Auth JWT](./src/middlewares/auth-jwt.js)** &rarr; Factory that returns middleware for managing token JWT (Sign, Verify, Delete).
 -   **[Clean Shutdown](./src/utils/eventHandler.js)** &rarr; Sets event handlers for clean shutdown signals of the application
--   **[Demo Auth Session](./src/routes/demoAuthSession.js)** &rarr; Provides basic routes for session management and user authentication demonstrations.
+-   **[Demo Auth Session](./src/routes/demo-auth-session.js)** &rarr; Provides basic routes for session management and user authentication demonstrations.
+-   **[Demo Auth JWT](./src/routes/demo-auth-session.js)** &rarr; Provides basic routes for jwt management and user authentication demonstrations.
 -   **[Resource API](./src/routes/resource.js)** &rarr; Factory who provides modular RESTful API routes `/api/<resource>` for CRUD operations on MongoDB collections, supporting search, add, update, and delete functionalities. This structure allows easy adaptation for different resources, ensuring flexible and scalable management.
 
 ## Directory Structure
 
 `node_template/`  
+├─ `public/` _- Directory for static files accessible to the client. It holds assets like images, CSS and JS._  
+│ └─ `css/` _- Contains custom CSS files for styling the web pages._  
 ├─ `src/` _- Source code for the application._  
 │ ├─ `config/` _- Configuration management and environment setup._  
 │ ├─ `connections/` _- MongoDB client setup and database connection utility._  
 │ ├─ `middlewares/` _- Middleware for error handling, request logging, and session management._  
 │ ├─ `routes/` _- Express routes definitions for demo authentication and user management._  
 │ └─ `utils/` _- Utilities like the async handler wrapper, query builders, and signal handling._  
+├─ `views/` _- Templates for rendering views on the server using a templating engine (e.g., EJS, Pug)._  
 ├─ `.env` _- Template for environment variables (copy to `.env.development` for development)._  
 ├─ `server.js` _- Entry point for the application._  
 └─ `package.json` _- Project metadata and dependencies._

@@ -23,21 +23,22 @@ const connectDB = require("./src/connections/connectDB");
 
 // Factory
 const mongoClient = createMongoClient(dbConfig);
-const authSession = createAuthSession(mongoClient, dbConfig.dbName, secretKeySession);
-const peopleRouter = createResourceRouter(mongoClient, dbConfig.dbName, dbConfig.collection);
-const jwtMiddleware = createJwtMiddleware({ algorithm: 'RS256', expiresIn: '1h', secretKey: secretKeyJwt });
+const authSession = createAuthSession(mongoClient, 'blog', secretKeySession);
+const peopleRouter = createResourceRouter(mongoClient, 'blog', 'people');
+const jwtMiddleware = createJwtMiddleware('RS256', '1h', secretKeyJwt);
 const demoJwtRouter = createJwtRouter(jwtMiddleware);
 setupEventHandler(mongoClient);
 
+// Other Congigurations
 app.set("view engine", "ejs");
 
 // Middleware
 app.use(express.static("public"));
 app.use(directLogger);
-app.use(express.json());
 app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: true })); // Consente di elaborare dati nel req.body
-app.use(cookieParser()); // Consente di accedere al parametrocookie delle request
+app.use(express.urlencoded({ extended: true })); // Consente di accedere a req.body
+app.use(express.json()); // Consente di accedere a req.json
+app.use(cookieParser()); // Consente di accedere a req.cookie
 app.use(authSession)
 app.use("/demo/jwt", demoJwtRouter);
 app.use("/demo/auth", demoSessionRouter);
