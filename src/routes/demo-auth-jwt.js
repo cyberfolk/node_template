@@ -25,6 +25,16 @@ function createJwtRouter(jwtMiddleware) {
         const theme = req.user.theme
         res.render('user', { theme })
     })
+
+    routes.get("/user/cambio-email", verifyToken, (req, res) => {
+        res.render('cambio-email')
+    })
+
+    routes.post("/user/cambio-email", verifyToken, (req, res) => {
+        console.log(req.body);
+        res.send("Hai richiestoo ls modifica di email. Sei autorizzato.")
+    })
+
     return routes
 }
 module.exports = createJwtRouter;

@@ -96,7 +96,8 @@ function createCookieSettings(expiresIn) {
     return {
         expires: new Date(Date.now() + ms(expiresIn)), // Imposta la scadenza del cookie
         httpOnly: true,  // Mitiga attacchi XSS
-        secure: secure   // Se true permette di navigare solo su HTTPS
+        secure: secure,  // Se true permette di navigare solo su HTTPS
+        sameSite: 'Lax'   // [Default]='None'. Ho impostato lax per prevenire attacchi CSRF
     };
 }
 
