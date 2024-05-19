@@ -1,8 +1,10 @@
 # Node Template
 
-## Overview
+**Initial commit**: 24/03/24
 
-Questo boilerplate è composto da moduli indipendenti, ognuno dedicato a un argomento diverso che ho studiato. Serve come base per applicazioni Node.js.
+**Technologies**: Express, MongoDB, Mongoose, NodeJS, Javascript
+
+**Info**: Questo boilerplate è composto da moduli indipendenti, ognuno dedicato a un argomento diverso che ho studiato. Serve come base per applicazioni Node.js.
 
 ## Custom Modules
 
