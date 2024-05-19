@@ -1,42 +1,36 @@
 const express = require("express");
+const demoJwtRouter = express.Router();
 const { jwtMiddleware } = require("../middlewares/auth-jwt");
-const demoJwtRouter = createJwtRouter(jwtMiddleware);
+const { signToken, verifyToken, deleteToken } = jwtMiddleware
 
 /******************************************************************************************************************
- *  Routes Factory => Demo JWT 
+ *  Routes Demo JWT 
  ******************************************************************************************************************
- * Crea Rotte di prova per testare il funzionamento dei Json Web Token.
+ * Rotte di prova per testare il funzionamento dei Json Web Token.
  * Le rotte fornite consentono il login, il logout parziale e l'accesso alle informazioni dell'utente.
- *
- * @param {Object} jwtMiddleware - Un oggetto contenente tre funzioni middleware: signToken, verifyToken e deleteToken.
- * @returns {express.Router} Un router Express configurato con le rotte per il JWT.
- *****************************************************************************************************************/
-function createJwtRouter(jwtMiddleware) {
-    const routes = express.Router();
-    const { signToken, verifyToken, deleteToken } = jwtMiddleware
+******************************************************************************************************************/
 
-    routes.get("/login", signToken, (req, res) => {
-        res.send('Ti sei appena loggato...')
-    })
+demoJwtRouter.get("/login", signToken, (req, res) => {
+    res.send('Ti sei appena loggato...')
+})
 
-    routes.get("/logout-parziale", deleteToken, (req, res) => {
-        res.send('logout-parziale effettuato...')
-    })
+demoJwtRouter.get("/logout-parziale", deleteToken, (req, res) => {
+    res.send('logout-parziale effettuato...')
+})
 
-    routes.get("/user", verifyToken, (req, res) => {
-        const theme = req.user.theme
-        res.render('user', { theme })
-    })
+demoJwtRouter.get("/user", verifyToken, (req, res) => {
+    const theme = req.user.theme
+    console.log(theme);
+    res.render('user', { theme })
+})
 
-    routes.get("/user/cambio-email", verifyToken, (req, res) => {
-        res.render('cambio-email')
-    })
+demoJwtRouter.get("/user/cambio-email", verifyToken, (req, res) => {
+    res.render('cambio-email')
+})
 
-    routes.post("/user/cambio-email", verifyToken, (req, res) => {
-        console.log(req.body);
-        res.send("Hai richiestoo ls modifica di email. Sei autorizzato.")
-    })
+demoJwtRouter.post("/user/cambio-email", verifyToken, (req, res) => {
+    const email = req.body.email;
+    res.send(`Hai richiestoo la modifica di email in ${email}. Sei autorizzato.`)
+})
 
-    return routes
-}
-module.exports = { createJwtRouter, demoJwtRouter };
+module.exports = demoJwtRouter;
