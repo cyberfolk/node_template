@@ -26,7 +26,7 @@ const urlExtended = express.urlencoded({ extended: true }) // middleware per ana
 
 // View engine setup
 app.set("views", dirViews);
-app.set("view engine", "pug");
+app.set("view engine", "ejs");
 
 // Middleware
 app.use("/public", staticFiles); // Imposto il midlleware static partendo da /public
