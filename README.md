@@ -2,47 +2,40 @@
 
 ## Overview
 
-This boilerplate is composed of independent modules, each dedicated to a different topic I have studied. It serves as a foundation for Node.js applications
+Questo boilerplate è composto da moduli indipendenti, ognuno dedicato a un argomento diverso che ho studiato. Serve come base per applicazioni Node.js.
 
 ## Custom Modules
 
--   **[Direct Logging](./src/middlewares/directLogger.js)** &rarr; Middleware to immediately log incoming request details.
--   **[Error Check](./src/middlewares/errorCheck.js)** &rarr; Middleware to intercept errors returning appropriate HTTP responses.
--   **[MongoDB Client](./src/connections/mongoClient.js)** &rarr; Factory that generates a MongoClient instance from configuration parameters.
--   **[Async Handler](./src/utils/asyncHandler.js)** &rarr; Utility to encapsulate asynchronous route handlers, simplifying error management in asynchronous operations.
--   **[Auth Session](./src/middlewares/auth-session.js)** &rarr; Factory that returns middleware for managing sessions through cookies and storage in MongoDB.
--   **[Auth JWT](./src/middlewares/auth-jwt.js)** &rarr; Factory that returns middleware for managing token JWT (Sign, Verify, Delete).
--   **[Clean Shutdown](./src/utils/eventHandler.js)** &rarr; Sets event handlers for clean shutdown signals of the application
--   **[Demo Auth Session](./src/routes/demo-auth-session.js)** &rarr; Provides basic routes for session management and user authentication demonstrations.
--   **[Demo Auth JWT](./src/routes/demo-auth-session.js)** &rarr; Provides basic routes for jwt management and user authentication demonstrations.
--   **[Resource API](./src/routes/resource.js)** &rarr; Factory who provides modular RESTful API routes `/api/<resource>` for CRUD operations on MongoDB collections, supporting search, add, update, and delete functionalities. This structure allows easy adaptation for different resources, ensuring flexible and scalable management.
+-   **[Direct Logging](./middlewares/directLogger.js)** &rarr; Middleware per registrare immediatamente i dettagli delle richieste in arrivo..
+-   **[Error Check](./middlewares/errorCheck.js)** &rarr; Middleware per intercettare errori restituendo risposte HTTP appropriate.
+-   **[Connect MongoDB](./connections/connectMongoDB.js)** &rarr; Factory che genera un'istanza di MongoClient dai parametri di configurazione.
+-   **[MongoDB Mongoose](./connections/connectMongoose.js)** &rarr; Factory che genera un'istanza di Mongoose dai parametri di configurazione.
+-   **[Async Handler](./utils/asyncHandler.js)** &rarr; Utility per incapsulare i gestori di route asincroni, semplificando la gestione degli errori nelle operazioni asincrone.
+-   **[Auth Session](./middlewares/auth-session.js)** &rarr; Factory che restituisce middleware per la gestione delle sessioni tramite cookie e memorizzazione in MongoDB.
+-   **[Auth JWT](./middlewares/auth-jwt.js)** &rarr; Factory che restituisce middleware per la gestione dei token JWT (Sign, Verify, Delete).
+-   **[Clean Shutdown](./utils/eventHandler.js)** &rarr; Imposta gestori di eventi per una chiusura pulita dell'applicazione
+-   **[Demo Auth Session](./routes/demo-auth-session.js)** &rarr; Fornisce route di base per la gestione delle sessioni e dimostrazioni di autenticazione utente.
+-   **[Demo Auth JWT](./routes/demo-auth-session.js)** &rarr; Fornisce route di base per la gestione dei jwt e dimostrazioni di autenticazione utente.
+-   **[Resource API](./routes/api-resource.js)** &rarr; Factory che fornisce route API RESTful modulari /api/<resource> per operazioni CRUD su collezioni MongoDB, supportando funzionalità di ricerca, aggiunta, aggiornamento e eliminazione. Questa struttura consente una facile adattabilità per diverse risorse, garantendo una gestione flessibile e scalabile.
 
 ## Directory Structure
 
 `node_template/`  
-├─ `public/` _- Directory for static files accessible to the client. It holds assets like images, CSS and JS._  
-│ └─ `css/` _- Contains custom CSS files for styling the web pages._  
-├─ `src/` _- Source code for the application._  
-│ ├─ `config/` _- Configuration management and environment setup._  
-│ ├─ `connections/` _- MongoDB client setup and database connection utility._  
-│ ├─ `middlewares/` _- Middleware for error handling, request logging, and session management._  
-│ ├─ `routes/` _- Express routes definitions for demo authentication and user management._  
-│ └─ `utils/` _- Utilities like the async handler wrapper, query builders, and signal handling._  
-├─ `views/` _- Templates for rendering views on the server using a templating engine (e.g., EJS, Pug)._  
-├─ `.env` _- Template for environment variables (copy to `.env.development` for development)._  
-├─ `server.js` _- Entry point for the application._  
-└─ `package.json` _- Project metadata and dependencies._
+├─ `public/` _- Directory per file statici accessibili al client. Contiene asset come immagini, CSS e JS._  
+│ └─ `css/` _- Contiene file CSS personalizzati per lo stile delle pagine web._  
+├─ `config/` _- Gestione della configurazione e impostazione dell'ambiente._  
+├─ `connections/` _- Configurazione del client MongoDB e utility di connessione al database._  
+├─ `middlewares/` _- Middleware per la gestione degli errori, la registrazione delle richieste e la gestione delle sessioni._  
+├─ `routes/` _- Definizioni delle route di Express per autenticazione demo e gestione degli utenti_  
+├─ `utils/` _- Utility come il wrapper async handler, query builders e gestione dei segnali._  
+├─ `views/` _- Template per il rendering delle viste sul server utilizzando un motore di template (es. EJS, Pug)._  
+├─ `.env` _- Template per le variabili d'ambiente (copiare in .env.dev per lo sviluppo)._  
+├─ `server.js` _- Punto di ingresso per l'applicazione._  
+└─ `package.json` _- Metadata del progetto e dipendenze._
 
 ## Getting Started
 
-### Prerequisites
-
--   Node.js
--   MongoDB Atlas account and a configured cluster
-
-### Installation
-
-**Clone the repo and install package:**
+### Clona la repo e installa i pacchetti
 
 ```bash
 $ git clone https://github.com/cyberfolk/node_template.git
@@ -50,28 +43,20 @@ $ cd node_template
 $ npm install
 ```
 
-**Set up .env variables:**
+### Crea e compila `.env.dev` partendo da `env`.
 
--   Copy `.env` and create `.env.development`
--   Update the variables with your MongoDB credentials and other configurations.
-
-### Running the Application
+### Esegui l'Applicazione
 
 ```bash
-$ npm start //or
-$ NODE_ENV=development npm start
+$ npm run dev
+# Esegue il server con nodemon in ambiente di sviluppo
+# Esegue "cross-env NODE_ENV=dev nodemon bin/www",
+
+$ npm dev_debug
+# Esegue il server con nodemon in modalità debug e in ambiente di sviluppo
+# Esegue "cross-env DEBUG=node_template:* NODE_ENV=dev nodemon bin/www"
 ```
 
 ## License
 
-This project is open-source software licensed under the ISC license.
-
-<!-- ## Design Patterns
-
-This project employs several architectural design patterns that enhance its scalability, maintainability, and modularity:
-
--   **Factory Pattern**: Used in creating instances of MongoDB clients and session handlers. This pattern allows for flexible and configurable instance creation that is decoupled from the system's business logic.
--   **Middleware Pattern**: Extensively used across the project for handling requests, errors, and logging. This pattern helps in separating concerns by isolating specific functions and behaviors in an application's request-response cycle, making the codebase easier to manage and extend.
--   **Module Pattern**: The use of modules to encapsulate configurations, database connections, and routes. Each module is responsible for a specific aspect of the application, enhancing code reusability and reducing dependencies.
--   **Singleton Pattern**: Implicitly used in managing the database connection. By ensuring that a single MongoDB client instance is created and reused throughout the application, this pattern helps in managing resources efficiently.
--   **Observer Pattern**: Used for handling exit signals to cleanly shut down the application. This pattern allows different parts of the application to respond to system-wide events without requiring tight coupling between the components. -->
+Questo progetto è software open-source con licenza ISC.

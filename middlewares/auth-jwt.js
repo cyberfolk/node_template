@@ -1,7 +1,11 @@
+const { secretKeyJwt } = require('../config/config');
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const ms = require("ms"); // ms: converte unità di tempo in millisecondi
 const path = require("path");
+
+const jwtMiddleware = createJwtMiddleware("RS256", "1h", secretKeyJwt);
+
 
 /*******************************************************************************************************************
  *  Middleware Factory => Auth JWT
@@ -80,8 +84,8 @@ function createJwtMiddleware(algorithm, expiresIn, secretKey) {
 function getKeyPair(algorithm, secretKey) {
     let privateKey, publicKey;
     if (algorithm === 'RS256') {
-        privateKey = fs.readFileSync(path.join(__dirname, '../../rsa.private'), 'utf8');
-        publicKey = fs.readFileSync(path.join(__dirname, '../../rsa.public'), 'utf8');
+        privateKey = fs.readFileSync(path.join(process.cwd(), 'rsa.private'), 'utf8');
+        publicKey = fs.readFileSync(path.join(process.cwd(), 'rsa.public'), 'utf8');
     } else {
         privateKey = publicKey = secretKey; // Per algoritmi simmetrici, usa la stessa chiave segreta per entrambe
     }
@@ -101,4 +105,4 @@ function createCookieSettings(expiresIn) {
     };
 }
 
-module.exports = createJwtMiddleware;
+module.exports = { createJwtMiddleware, jwtMiddleware };

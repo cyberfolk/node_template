@@ -2,6 +2,9 @@ const createQuerySearch = require("../utils/createQuerySearch");
 const asyncHandler = require("../utils/asyncHandler");
 const { ObjectId } = require("mongodb");
 const express = require("express");
+const { mongoClient } = require("../connections/connectMongoDB")
+const peopleRouter = createResourcesRouter(mongoClient, "blog", "people");
+
 
 /******************************************************************************************************************
  *  Routes Factory => CRUD generiche da applicare su un qualunque modello. 
@@ -129,4 +132,4 @@ class ApiError extends Error {
 	}
 }
 
-module.exports = createResourcesRouter;
+module.exports = { createResourcesRouter, peopleRouter };

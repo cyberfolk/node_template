@@ -1,6 +1,9 @@
 const MongoStore = require('connect-mongo'); // Gestione della persistenza delle sessioni in MongoDB.
 const session = require('express-session');  // Middleware per la gestione delle sessioni in Express.
 const { v4: uuidv4 } = require('uuid');      // Genera ID univoci per le sessioni tramite UUID versione 4.
+const { secretKeySession } = require('../config/config');
+const { mongoClient } = require("../connections/connectMongoDB")
+const authSession = createAuthSession(mongoClient, 'blog', secretKeySession);
 
 /******************************************************************************************************************
  *  Middleware Factory => Auth Session with Cookies
@@ -13,7 +16,7 @@ const { v4: uuidv4 } = require('uuid');      // Genera ID univoci per le session
  * @param {string} secretKey - La chiave segreta utilizzata per firmare l'ID della sessione.
  * @returns {Express.Session} Middleware di sessione configurato per Express.
  ******************************************************************************************************************/
-function createAauthSession(client, dbName, secretKey) {
+function createAuthSession(client, dbName, secretKey) {
     return session({
         secret: secretKey, // Chiave segreta per la firma dell'ID della sessione
         resave: false, // Evita il resave della sessione se non modificata.
@@ -28,7 +31,7 @@ function createAauthSession(client, dbName, secretKey) {
     })
 }
 
-module.exports = createAauthSession;
+module.exports = { createAuthSession, authSession };
 
 /******************************************************************************************************************
  * SPIEGAZIONE DETTAGLIATA: I compiti di un middleware di sessione sono i seguenti:                               *

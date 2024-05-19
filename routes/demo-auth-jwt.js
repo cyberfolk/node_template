@@ -1,4 +1,6 @@
 const express = require("express");
+const { jwtMiddleware } = require("../middlewares/auth-jwt");
+const demoJwtRouter = createJwtRouter(jwtMiddleware);
 
 /******************************************************************************************************************
  *  Routes Factory => Demo JWT 
@@ -37,4 +39,4 @@ function createJwtRouter(jwtMiddleware) {
 
     return routes
 }
-module.exports = createJwtRouter;
+module.exports = { createJwtRouter, demoJwtRouter };

@@ -1,10 +1,11 @@
 {
   "name": "node_template",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "dev": "cross-env NODE_ENV=dev nodemon bin/www",
+    "dev_debug": "cross-env DEBUG=node_template:* NODE_ENV=dev nodemon bin/www"
   },
   "repository": {
     "type": "git",
@@ -18,17 +19,21 @@
   "homepage": "https://github.com/cyberfolk/node_template#readme",
   "dependencies": {
     "connect-mongo": "^5.1.0",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.5.0",
-    "morgan": "^1.10.0",
+    "mongodb": "^6.6.1",
+    "mongoose": "^8.3.4",
+    "morgan": "~1.9.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.0"
   }
 }
