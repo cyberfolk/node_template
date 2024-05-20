@@ -9,14 +9,14 @@ const app = express();
 // My Modules
 const { connectDirectDB } = require("./connections/connectMongoDB");
 const { connectMongoose } = require("./connections/connectMongoose");
-const { demoJwtRouter } = require("./routes/demo-auth-jwt");
 const { peopleRouter } = require("./routes/api-resource");
-const { authSession } = require("./middlewares/auth-session");
+const authSession = require("./middlewares/auth-session");
 const demoSessionRouter = require("./routes/demo-auth-session");
+const demoJwtRouter = require("./routes/demo-auth-jwt");
 const directLogger = require("./middlewares/directLogger");
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
 const errorCheck = require("./middlewares/errorCheck");
+const passport = require("./middlewares/passport-config");
 
 // Variable Setup
 const dirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
@@ -36,17 +36,18 @@ app.use(urlExtended);    // Consente di accedere a req.body
 app.use(express.json()); // Consente di accedere a req.json
 app.use(cookieParser()); // Consente di accedere a req.cookie
 app.use(authSession)
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Router Middleware
 app.use("/api/people", peopleRouter);
-app.use("/demo/auth", demoSessionRouter);
+app.use("/demo/session", demoSessionRouter);
 app.use("/demo/jwt", demoJwtRouter);
 app.use("/index", indexRouter);
-app.use("/users", usersRouter);
 
 app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 
-connectDirectDB();
+connectMongoose();
 //connectDirectDB()
 
 module.exports = app;
