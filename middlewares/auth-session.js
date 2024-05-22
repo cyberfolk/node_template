@@ -1,13 +1,14 @@
 /******************************************************************************************************************
- * MIDDLEWARE DI GESTIONE DELLE SESSIONI - con cookies e savataggio in MongoDB.                                   *
+ * MIDDLEWARE => Gestione Sessioni con cookies e savataggio in MongoDB.                                           *
  *                                                                                                                *
- * I compiti di un middleware di sessione sono i seguenti:                                                        *
- * - GESTIRE L'ID DELLA SESSIONE: Ogni volta che una richiesta arriva al server, il middleware cerca un ID di     *
+ * - GESTISCE ID SESSIONE: Ogni volta che una richiesta arriva al server, il middleware cerca un ID di            *
  *   sessione nel cookie della richiesta. Se l'ID esiste e corrisponde a una sessione valida nello store, allora  *
  *   carica i dati di quella sessione e li rende disponibili nell'oggetto request come req.session.               *
- * - CREAZIONE DELLA SESSIONE: Se non c'è un ID di sessione, o se l'ID non corrisponde a nessuna sessione nel db  *
+ *                                                                                                                *
+ * - CREA ID SESSIONE: Se non c'è un ID di sessione, o se l'ID non corrisponde a nessuna sessione nel db          *
  *   il middleware può generare un nuovo ID sessione (usando la funzione genid se fornita) e iniziarne una nuova. *
- * - IMPOSTAZIONE DEI COOKIE: Basato sulle configurazioni del cookie fornite (come secure, httpOnly, e maxAge),   *
+ *                                                                                                                *
+ * - IMPOSTA I COOKIE: Basato sulle configurazioni del cookie fornite (come secure, httpOnly, e maxAge),          *
  *   il middleware si assicura che il cookie nella risposta sia corretto e che rispetti le direttive di sicurezza.*
  ******************************************************************************************************************/
 

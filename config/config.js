@@ -26,14 +26,14 @@ const pckgName = path.basename(process.cwd());
 const appName = `appName=${pckgName}`; // [Opzionale] Facilita il monitoraggio delle connessioni nel cluster.
 const credentials = `${dbConfig.username}:${dbConfig.password}`;
 const hostDetails = `${dbConfig.hostName}`;
-const options = "retryWrites=true&w=majority&" + appName;
+const options = `retryWrites=true&w=majority&${appName}`
 const mongoURI = `mongodb+srv://${credentials}@${hostDetails}`
 const mongoURI_envDB = createDBMongoURI(dbName)
 /**
  * Crea una stringa di connessione MongoDB URI per il database specificato.
  */
 function createDBMongoURI(dbName) {
-    return `mongodb+srv://${credentials}@${hostDetails}/${dbName}?${options}`
+    return `${mongoURI}/${dbName}?${options}`
 }
 module.exports = { secretKeySession, secretKeyJwt, dbConfig, mongoURI, createDBMongoURI, mongoURI_envDB };
 

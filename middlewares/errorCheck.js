@@ -1,7 +1,6 @@
 /******************************************************************************************************************
- *  Middleware => Controllo Errori 
+ * Middleware => Controllo Errori 
  *
- * ****************************************************************************************************************
  * Intercetta errori comuni, errori di parsing JSON ed internal-serve-error, ritornando risposte HTTP appropriate.
  * NB: Da inserire sempre come ultimo middleware della catena.
  *****************************************************************************************************************/
