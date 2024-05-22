@@ -25,15 +25,16 @@
 `node_template/`  
 ├─ `public/` _- Directory per file statici accessibili al client. Contiene asset come immagini, CSS e JS._  
 │ └─ `css/` _- Contiene file CSS personalizzati per lo stile delle pagine web._  
-├─ `config/` _- Gestione della configurazione e impostazione dell'ambiente._  
-├─ `connections/` _- Configurazione del client MongoDB e utility di connessione al database._  
-├─ `middlewares/` _- Middleware per la gestione degli errori, la registrazione delle richieste e la gestione delle sessioni._  
-├─ `routes/` _- Definizioni delle route di Express per autenticazione demo e gestione degli utenti_  
-├─ `utils/` _- Utility come il wrapper async handler, query builders e gestione dei segnali._  
-├─ `views/` _- Template per il rendering delle viste sul server utilizzando un motore di template (es. EJS, Pug)._  
+├─ `src/`  
+│ └─ `config/` _- Gestione della configurazione e impostazione dell'ambiente._  
+│ └─`connections/` _- Configurazione del client MongoDB e utility di connessione al database._  
+│ └─`middlewares/` _- Middleware per la gestione degli errori, la registrazione delle richieste e la gestione delle sessioni._  
+│ └─`routes/` _- Definizioni delle route di Express per autenticazione demo e gestione degli utenti_  
+│ └─`utils/` _- Utility come il wrapper async handler, query builders e gestione dei segnali._  
 ├─ `.env` _- Template per le variabili d'ambiente (copiare in .env.dev per lo sviluppo)._  
-├─ `server.js` _- Punto di ingresso per l'applicazione._  
-└─ `package.json` _- Metadata del progetto e dipendenze._
+├─ `app.js` _- Punto di ingresso per l'applicazione._  
+├─ `views/` _- Template per il rendering delle viste sul server utilizzando un motore di template (es. EJS, Pug)._  
+├─ `package.json` _- Metadata del progetto e dipendenze._
 
 ## Getting Started
 

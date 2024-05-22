@@ -7,16 +7,16 @@ const path = require("path");
 const app = express();
 
 // My Modules
-const { connectDirectDB } = require("./connections/connectMongoDB");
-const { connectMongoose } = require("./connections/connectMongoose");
-const { peopleRouter } = require("./routes/api-resource");
-const authSession = require("./middlewares/auth-session");
-const demoSessionRouter = require("./routes/demo-auth-session");
-const demoJwtRouter = require("./routes/demo-auth-jwt");
-const directLogger = require("./middlewares/directLogger");
-const indexRouter = require("./routes/index");
-const errorCheck = require("./middlewares/errorCheck");
-const passport = require("./middlewares/passport-config");
+const { connectDirectDB } = require("./src/connections/connectMongoDB");
+const { connectMongoose } = require("./src/connections/connectMongoose");
+const { peopleRouter } = require("./src/routes/api-resource");
+const authSession = require("./src/middlewares/auth-session");
+const demoSessionRouter = require("./src/routes/demo-auth-session");
+const demoJwtRouter = require("./src/routes/demo-auth-jwt");
+const directLogger = require("./src/middlewares/directLogger");
+const indexRouter = require("./src/routes/index");
+const errorCheck = require("./src/middlewares/errorCheck");
+const passport = require("./src/middlewares/passport-config");
 
 // Variable Setup
 const dirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
