@@ -13,8 +13,8 @@ routes.get("/", (req, res) => {
 })
 
 routes.post('/login', passport.authenticate('local-auth', {
-	successRedirect: '/demo/session/success',
-	failureRedirect: '/demo/session/failure',
+	successRedirect: '/auth-session/success',
+	failureRedirect: '/auth-session/failure',
 	failureFlash: false
 }));
 
@@ -27,25 +27,21 @@ routes.get('/failure', (req, res) => {
 });
 
 routes.get('/login', (req, res) => {
-	res.render('login')
+	res.render('./auth-session/login', { title: 'Login', layout: 'layouts/main-layout' });
 });
 
 routes.get("/logout", (req, res) => {
 	req.session.isLogged = false
-	res.send()
+	res.render('./auth-session/logout', { title: 'Login', layout: 'layouts/main-layout' });
 })
 
 routes.get("/destroy-session", (req, res) => {
 	req.session.destroy(error => console.log(error))
-	res.send()
+	res.render('./auth-session/destroy-session', { title: 'Login', layout: 'layouts/main-layout' });
 })
 
 routes.get("/user", (req, res) => {
-	if (req.session.isLogged) {
-		res.send("Sei loggato...")
-	} else {
-		res.send("Non sei loggato...")
-	}
+	res.render('./auth-session/user', { title: 'user', layout: 'layouts/main-layout', session: req.session });
 })
 
 routes.get("/color", (req, res) => {
@@ -54,14 +50,6 @@ routes.get("/color", (req, res) => {
 
 routes.get('/success', (req, res) => {
 	res.send('Login successful');
-});
-
-routes.get('/user/dashboard', function (req, res) {
-	res.send('dashboard');
-});
-
-routes.get('/user/dashboard2', function (req, res) {
-	res.send('dashboard2');
 });
 
 module.exports = routes;

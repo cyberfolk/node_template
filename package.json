@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon bin/www",
-    "dev_debug": "cross-env DEBUG=node_template:* NODE_ENV=dev nodemon bin/www"
+    "dev_debug": "cross-env DEBUG=node_template:* NODE_ENV=dev nodemon -e js,ejs bin/www"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.0",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
