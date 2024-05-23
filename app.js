@@ -10,7 +10,7 @@ const app = express();
 const { connectDirectDB } = require("./src/connections/connectMongoDB");
 const { connectMongoose } = require("./src/connections/connectMongoose");
 const { peopleRouter } = require("./src/routes/api-resource");
-const demoSessionRouter = require("./src/routes/demo-auth-session");
+const passportRouter = require("./src/routes/demo-passport");
 const expressLayouts = require('express-ejs-layouts');
 const demoJwtRouter = require("./src/routes/demo-auth-jwt");
 const directLogger = require("./src/middlewares/directLogger");
@@ -34,16 +34,16 @@ app.use("/public", staticFiles); // Imposto il midlleware static partendo da /pu
 app.use(expressLayouts);
 app.use(directLogger);
 app.use(morgan("dev"));
+app.use(authSession)     // Va posizionato il prima possibile, crea una sessione e la salva nel DB
 app.use(urlExtended);    // Consente di accedere a req.body
 app.use(express.json()); // Consente di accedere a req.json
 app.use(cookieParser()); // Consente di accedere a req.cookie
-app.use("/auth-session", authSession)
-app.use("/auth-session", passport.initialize());
-app.use("/auth-session", passport.session());
+app.use("/auth-passport", passport.initialize());
+app.use("/auth-passport", passport.session());
 
 // Router Middleware
 app.use("/api/people", peopleRouter);
-app.use("/auth-session", demoSessionRouter);
+app.use("/auth-passport", passportRouter);
 //app.use("/auth/jwt", demoJwtRouter);
 app.use("/", indexRouter);
 

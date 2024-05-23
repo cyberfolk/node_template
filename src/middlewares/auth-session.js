@@ -1,6 +1,7 @@
 /******************************************************************************************************************
  * MIDDLEWARE => Gestione Sessioni con cookies e savataggio in MongoDB.                                           *
  *                                                                                                                *
+ * Va posizionato prima di tutte le rotte, per garantire che ogni rotta possa accedere alla sessione.             *
  * - GESTISCE ID SESSIONE: Ogni volta che una richiesta arriva al server, il middleware cerca un ID di            *
  *   sessione nel cookie della richiesta. Se l'ID esiste e corrisponde a una sessione valida nello store, allora  *
  *   carica i dati di quella sessione e li rende disponibili nell'oggetto request come req.session.               *
@@ -17,7 +18,12 @@ const session = require('express-session');  // Middleware per la gestione delle
 const { v4: uuidv4 } = require('uuid');      // Genera ID univoci per le sessioni tramite UUID versione 4.
 const { secretKeySession, mongoURI_envDB, dbConfig } = require('../config/config');
 const { mongoose } = require("../connections/connectMongoose")
-const store = MongoStore.create({ mongoUrl: mongoURI_envDB, mongooseConnection: mongoose.connection }) // Configura Mongoose come store per le sessioni.
+
+// Configura Mongoose come store per le sessioni.
+const store = MongoStore.create({
+    mongoUrl: mongoURI_envDB,
+    mongooseConnection: mongoose.connection
+})
 
 const authSession = session({
     secret: secretKeySession, // Chiave segreta per la firma dell'ID della sessione
