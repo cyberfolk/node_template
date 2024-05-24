@@ -25,10 +25,18 @@ routes.get('/failure', (req, res) => {
 });
 
 routes.get('/login', (req, res) => {
+	if (req.session.passport) {
+		req.flash('msg_error', 'Volevi accedere alla rotta di login, ma sei già loggato.');
+		return res.redirect('/auth/user');
+	}
 	res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
 });
 
 routes.get("/logout", (req, res) => {
+	if (!req.session.passport) {
+		req.flash('msg_error', 'Volevi accedere alla rotta di logout, ma non sei loggato.');
+		return res.redirect('/auth/login');
+	}
 	req.logout((err) => {
 		if (err) {
 			console.error('Errore nel logout:', err);
@@ -48,7 +56,7 @@ routes.get("/logout", (req, res) => {
 
 routes.get("/user", async (req, res) => {
 	if (!req.session.passport) {
-		req.flash('msg_error', 'Volevi accedere alla pagina user, ma non sei loggato.');
+		req.flash('msg_error', 'Volevi accedere alla rotta di user, ma non sei loggato.');
 		return res.redirect('/auth/login');
 	}
 	const user = await User.findById(req.session.passport.user);
