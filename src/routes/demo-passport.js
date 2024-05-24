@@ -40,7 +40,6 @@ routes.get("/session-destroy", (req, res) => {
 
 routes.get("/user", async (req, res) => {
 	const user = await User.findById(req.session.passport.user);
-	console.log(user);
 	res.render('./auth-passport/user', { title: 'user', layout: 'layouts/main-layout', username: user.username });
 })
 
