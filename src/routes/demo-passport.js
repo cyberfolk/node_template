@@ -12,8 +12,8 @@ const User = require('../models/user')
 
 routes.post('/login', passport.authenticate('local-auth', {
 	successRedirect: '/auth/user',
-	failureRedirect: '/auth/failure',
-	failureFlash: false
+	failureRedirect: '/auth/login',
+	failureFlash: true // Attiva i messaggi flash in caso di fallimento
 }));
 
 routes.get('/success', (req, res) => {
@@ -26,7 +26,7 @@ routes.get('/failure', (req, res) => {
 
 routes.get('/login', (req, res) => {
 	if (req.session.passport) {
-		req.flash('msg_error', 'Volevi accedere alla rotta di login, ma sei già loggato.');
+		req.flash('warning', 'Volevi accedere alla rotta di login, ma sei già loggato.');
 		return res.redirect('/auth/user');
 	}
 	res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
@@ -34,7 +34,7 @@ routes.get('/login', (req, res) => {
 
 routes.get("/logout", (req, res) => {
 	if (!req.session.passport) {
-		req.flash('msg_error', 'Volevi accedere alla rotta di logout, ma non sei loggato.');
+		req.flash('warning', 'Volevi accedere alla rotta di logout, ma non sei loggato.');
 		return res.redirect('/auth/login');
 	}
 	req.logout((err) => {
@@ -56,7 +56,7 @@ routes.get("/logout", (req, res) => {
 
 routes.get("/user", async (req, res) => {
 	if (!req.session.passport) {
-		req.flash('msg_error', 'Volevi accedere alla rotta di user, ma non sei loggato.');
+		req.flash('warning', 'Volevi accedere alla rotta di user, ma non sei loggato.');
 		return res.redirect('/auth/login');
 	}
 	const user = await User.findById(req.session.passport.user);
