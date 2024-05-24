@@ -45,7 +45,8 @@ app.use("/auth-passport", passport.session());
 app.use("/api/people", peopleRouter);
 app.use("/auth-passport", passportRouter);
 //app.use("/auth/jwt", demoJwtRouter);
-app.use("/", indexRouter);
+app.use("/", indexRouter); // A causa della rotta 404 deve stare per pernultimo
+
 
 app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 

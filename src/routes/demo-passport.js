@@ -7,6 +7,8 @@
 const express = require("express");
 const routes = express.Router();
 const passport = require("../middlewares/passport-config")
+const User = require('../models/user')
+
 
 routes.post('/login', passport.authenticate('local-auth', {
 	successRedirect: '/auth-passport/user',
@@ -36,8 +38,10 @@ routes.get("/session-destroy", (req, res) => {
 	res.render('./auth-passport/session-destroy', { title: 'Login', layout: 'layouts/main-layout' });
 })
 
-routes.get("/user", (req, res) => {
-	res.render('./auth-passport/user', { title: 'user', layout: 'layouts/main-layout', session: req.session });
+routes.get("/user", async (req, res) => {
+	const user = await User.findById(req.session.passport.user);
+	console.log(user);
+	res.render('./auth-passport/user', { title: 'user', layout: 'layouts/main-layout', username: user.username });
 })
 
 routes.get("/color", (req, res) => {

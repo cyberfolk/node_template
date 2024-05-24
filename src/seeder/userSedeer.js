@@ -1,4 +1,4 @@
-// eseguibile con $ NODE_ENV=dev node seeder/userSedeer.js
+// eseguibile con $ NODE_ENV=dev node src/seeder/userSedeer.js
 const { mongoURI_envDB } = require('../config/config');
 const mongoose = require('mongoose');
 const User = require('../models/user');
@@ -7,7 +7,8 @@ const bcrypt = require('bcrypt');
 mongoose.connect(mongoURI_envDB);
 
 const users = [
-    { username: 'admin', password: 'admin' },
+    //{ username: 'admin', password: 'admin' },
+    { username: 'demo', password: 'demo' },
 ];
 
 const insertUsers = async (users) => {

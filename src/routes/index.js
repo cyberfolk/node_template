@@ -14,10 +14,16 @@ router.get('/about', (req, res) => {
 });
 
 router.get("/session-info", (req, res) => {
-  const sessionInfoObj = { id: req.session.id, ...req.session };
+  const sessionInfoObj = {
+    "req.session.id": req.session.id,
+    "req.sessionID": req.sessionID,
+    "req.cookies['connect.sid']": req.cookies['connect.sid'],
+    "req.session": req.session
+  };
+
   const sessionInfoStr = JSON.stringify(sessionInfoObj, null, 2);
   res.render('./session-info', {
-    title: 'sessionInfo', sessionInfo: sessionInfoStr, layout: 'layouts/main-layout'
+    title: 'Session-Info', sessionInfo: sessionInfoStr, layout: 'layouts/main-layout'
   });
 })
 
