@@ -6,13 +6,13 @@
 
 const express = require("express");
 const routes = express.Router();
-const passport = require("../middlewares/passport-config")
+const passport = require("../config/passport")
 const User = require('../models/user')
 
 
 routes.post('/login', passport.authenticate('local-auth', {
-	successRedirect: '/auth-passport/user',
-	failureRedirect: '/auth-passport/failure',
+	successRedirect: '/auth/user',
+	failureRedirect: '/auth/failure',
 	failureFlash: false
 }));
 
@@ -25,22 +25,34 @@ routes.get('/failure', (req, res) => {
 });
 
 routes.get('/login', (req, res) => {
-	res.render('./auth-passport/login', { title: 'Login', layout: 'layouts/main-layout' });
+	res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
 });
 
 routes.get("/logout", (req, res) => {
-	req.session.isLogged = false
-	res.render('./auth-passport/logout', { title: 'Login', layout: 'layouts/main-layout' });
-})
+	req.logout((err) => {
+		if (err) {
+			console.error('Errore nel logout:', err);
+			return res.status(500).send('Errore nel logout');
+		}
+		req.session.destroy((error) => {
+			if (error) {
+				console.error('Errore nella distruzione della sessione:', error);
+				return res.status(500).send('Errore nella distruzione della sessione');
+			}
+			res.clearCookie('connect.sid'); // Cancella il cookie di sessione
+			res.render('./auth/logout', { title: 'Login', layout: 'layouts/main-layout' });
+		});
+	});
+});
 
-routes.get("/session-destroy", (req, res) => {
-	req.session.destroy(error => console.log(error))
-	res.render('./auth-passport/session-destroy', { title: 'Login', layout: 'layouts/main-layout' });
-})
 
 routes.get("/user", async (req, res) => {
+	if (!req.session.passport) {
+		req.flash('msg_error', 'Volevi accedere alla pagina user, ma non sei loggato.');
+		return res.redirect('/auth/login');
+	}
 	const user = await User.findById(req.session.passport.user);
-	res.render('./auth-passport/user', { title: 'user', layout: 'layouts/main-layout', username: user.username });
+	res.render('./auth/user', { title: 'user', layout: 'layouts/main-layout', username: user.username });
 })
 
 routes.get("/color", (req, res) => {

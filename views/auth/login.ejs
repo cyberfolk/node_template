@@ -1,4 +1,12 @@
 <h2>LOGIN</h2>
+<% if (msg_error!='') { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	<%= msg_error %>
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<% } %>
 <form action="/auth-passport/login" method="POST">
 	<label for="username">Username:</label>
 	<input type="text" name="username" /><br /><br />

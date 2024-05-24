@@ -5,6 +5,7 @@ const favicon = require('serve-favicon');
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
+const flash = require('connect-flash');
 const app = express();
 
 // My Modules
@@ -18,7 +19,8 @@ const directLogger = require("./src/middlewares/directLogger");
 const indexRouter = require("./src/routes/index");
 const authSession = require("./src/middlewares/auth-session");
 const errorCheck = require("./src/middlewares/errorCheck");
-const passport = require("./src/middlewares/passport-config");
+const passport = require("./src/config/passport");
+const msg_flash = require('./src/middlewares/msg_flash');
 
 // Variable Setup
 const pathDirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
@@ -41,12 +43,14 @@ app.use(authSession)     // Va posizionato il prima possibile, crea una sessione
 app.use(urlExtended);    // Consente di accedere a req.body
 app.use(express.json()); // Consente di accedere a req.json
 app.use(cookieParser()); // Consente di accedere a req.cookie
-app.use("/auth-passport", passport.initialize());
-app.use("/auth-passport", passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use(msg_flash);
 
 // Router Middleware
 app.use("/api/people", peopleRouter);
-app.use("/auth-passport", passportRouter);
+app.use("/auth", passportRouter);
 //app.use("/auth/jwt", demoJwtRouter);
 app.use("/", indexRouter); // A causa della rotta 404 deve stare per pernultimo
 
