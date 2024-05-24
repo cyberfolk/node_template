@@ -1,6 +1,7 @@
 // npm Modules
 const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
+const favicon = require('serve-favicon');
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
@@ -20,20 +21,22 @@ const errorCheck = require("./src/middlewares/errorCheck");
 const passport = require("./src/middlewares/passport-config");
 
 // Variable Setup
-const dirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
-const dirViews = path.join(__dirname, "views"); // path della dir 'views' realtivo alla root project
-const staticFiles = express.static(dirPublic); // "middleware statico" per servire i file statici di 'public'
+const pathDirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
+const pathDirViews = path.join(__dirname, "views"); // path della dir 'views' realtivo alla root project
+const pathFavicon = path.join(__dirname, 'favicon.ico'); // path della file 'favicon' realtivo alla root project
+const staticFiles = express.static(pathDirPublic); // "middleware statico" per servire i file statici di 'public'
 const urlExtended = express.urlencoded({ extended: true }) // middleware per analisi dati dai form HTML con POST.
 
 // View engine setup
-app.set("views", dirViews);
+app.set("views", pathDirViews);
 app.set("view engine", "ejs");
 
 // Middleware
 app.use("/public", staticFiles); // Imposto il midlleware static partendo da /public
+app.use(favicon(pathFavicon)); // Servire il file favicon.ico
 app.use(expressLayouts);
 app.use(directLogger);
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 app.use(authSession)     // Va posizionato il prima possibile, crea una sessione e la salva nel DB
 app.use(urlExtended);    // Consente di accedere a req.body
 app.use(express.json()); // Consente di accedere a req.json
