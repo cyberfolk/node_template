@@ -10,6 +10,21 @@ const passport = require("../config/passport")
 const User = require('../models/user')
 const bcrypt = require('bcrypt');
 
+function checkAuth(req, res, next) {
+	if (req.session.passport) { next(); }
+	else {
+		req.flash('warning', 'Devi essere loggato per accedere a questa risorsa.');
+		res.redirect('/auth/login');
+	}
+}
+
+function checkNotAuth(req, res, next) {
+	if (!req.session.passport) { next(); }
+	else {
+		req.flash('warning', 'Sei già loggato.');
+		res.redirect('/auth/user');
+	}
+}
 
 routes.post('/login', passport.authenticate('local-auth', {
 	successRedirect: '/auth/user',
@@ -17,19 +32,11 @@ routes.post('/login', passport.authenticate('local-auth', {
 	failureFlash: true // Attiva i messaggi flash in caso di fallimento
 }));
 
-routes.get('/login', (req, res) => {
-	if (req.session.passport) {
-		req.flash('warning', 'Volevi accedere alla rotta di login, ma sei già loggato.');
-		return res.redirect('/auth/user');
-	}
+routes.get('/login', checkNotAuth, (req, res) => {
 	res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
 });
 
-routes.get("/logout", (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Volevi accedere alla rotta di logout, ma non sei loggato.');
-		return res.redirect('/auth/login');
-	}
+routes.get("/logout", checkAuth, (req, res) => {
 	req.logout((err) => {
 		if (err) {
 			console.error('Errore nel logout:', err);
@@ -46,30 +53,17 @@ routes.get("/logout", (req, res) => {
 	});
 });
 
-routes.get("/user", async (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Volevi accedere alla rotta di user, ma non sei loggato.');
-		return res.redirect('/auth/login');
-	}
+routes.get("/user", checkAuth, async (req, res) => {
 	const user = await User.findById(req.session.passport.user);
 	res.render('./auth/user', { title: 'user', layout: 'layouts/main-layout', username: user.username });
 })
 
-routes.get('/change-password', (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Devi essere loggato per cambiare la password.');
-		return res.redirect('/auth/login');
-	}
+routes.get('/change-password', checkAuth, (req, res) => {
 	res.render('./auth/change-password', { title: 'Change Password', layout: 'layouts/main-layout' });
 });
 
 // Rotta per cambiare la password
-routes.post('/change-password', async (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Devi essere loggato per cambiare la password.');
-		return res.redirect('/auth/login');
-	}
-
+routes.post('/change-password', checkAuth, async (req, res) => {
 	const { oldPassword, newPassword } = req.body;
 	const user = await User.findById(req.session.passport.user);
 
@@ -86,21 +80,12 @@ routes.post('/change-password', async (req, res) => {
 	res.redirect('/auth/user');
 });
 
-routes.get('/change-username', (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Devi essere loggato per cambiare il nome utente.');
-		return res.redirect('/auth/login');
-	}
+routes.get('/change-username', checkAuth, (req, res) => {
 	res.render('./auth/change-username', { title: 'Change Username', layout: 'layouts/main-layout' });
 });
 
 // Rotta per cambiare il nome utente
-routes.post('/change-username', async (req, res) => {
-	if (!req.session.passport) {
-		req.flash('warning', 'Devi essere loggato per cambiare il nome utente.');
-		return res.redirect('/auth/login');
-	}
-
+routes.post('/change-username', checkAuth, async (req, res) => {
 	const { newUsername } = req.body;
 	const user = await User.findById(req.session.passport.user);
 
