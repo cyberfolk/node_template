@@ -8,14 +8,17 @@ const UserSchema = new Schema({
 });
 
 // Metodo per hashare la password prima di salvare l'utente
-UserSchema.pre('save', function (next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-    bcrypt.hash(user.password, 10, (err, hash) => {
-        if (err) return next(err);
-        user.password = hash;
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
         next();
-    });
+    } catch (err) {
+        next(err);
+    }
 });
 
 // Metodo per confrontare la password

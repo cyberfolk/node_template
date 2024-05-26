@@ -8,7 +8,6 @@ const express = require("express");
 const routes = express.Router();
 const passport = require("../config/passport")
 const User = require('../models/user')
-const bcrypt = require('bcrypt');
 
 /* function getBaseUrl(req, res, next) {
 	  const baseUrl = req.originalUrl.replace(req.path, '');
@@ -54,7 +53,7 @@ routes.get("/logout", checkAuth, (req, res) => {
 				return res.status(500).send('Errore nella distruzione della sessione');
 			}
 			res.clearCookie('connect.sid'); // Cancella il cookie di sessione
-			res.render('./auth/logout', { title: 'Login', layout: 'layouts/main-layout' });
+			res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
 		});
 	});
 });
@@ -73,7 +72,7 @@ routes.post('/change-password', checkAuth, async (req, res) => {
 	const { oldPassword, newPassword } = req.body;
 	const user = await User.findById(req.session.passport.user);
 
-	const isMatch = await bcrypt.compare(oldPassword, user.password);
+	const isMatch = user.verifyPassword(oldPassword);
 	if (!isMatch) {
 		req.flash('error', 'La vecchia password non è corretta.');
 		return res.redirect('/auth/user');
@@ -102,4 +101,48 @@ routes.post('/change-username', checkAuth, async (req, res) => {
 	res.redirect('/auth/user');
 });
 
+// Rotta per registrarsi
+routes.post('/register', checkNotAuth, async (req, res) => {
+	try {
+		const { username, password } = req.body;
+		const existingUser = await User.findOne({ username });
+
+		if (existingUser) {
+			req.flash('error', 'Nome utente già in uso.');
+			return res.redirect('/auth/register');
+		}
+
+		const newUser = new User({ username, password });
+		await newUser.save();
+
+		req.flash('success', 'Registrazione completata con successo. Puoi effettuare il login.');
+		res.redirect('/auth/login');
+	} catch (err) {
+		console.error('Errore durante la registrazione:', err);
+		req.flash('error', 'Si è verificato un errore durante la registrazione.');
+		res.redirect('/auth/register');
+	}
+});
+
+routes.get('/register', checkNotAuth, (req, res) => {
+	res.render('./auth/register', { title: 'Registrazione', layout: 'layouts/main-layout' });
+});
+
+routes.post('/delete-user', checkAuth, async (req, res) => {
+	const user = await User.findById(req.session.passport.user);
+
+	if (!user) {
+		req.flash('error', 'Utente non trovato.');
+		return res.redirect('/auth/user');
+	}
+
+	await User.findByIdAndDelete(user);
+
+	req.flash('success', 'Utente eliminato con successo.');
+	res.redirect('/auth/logout');
+});
+
+routes.get('/delete-user', checkAuth, (req, res) => {
+	res.render('./auth/delete-user', { title: 'Delete User', layout: 'layouts/main-layout' });
+});
 module.exports = routes;
