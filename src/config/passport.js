@@ -60,13 +60,14 @@ passport.use(new JwtStrategy(jwtOpts, (jwt_payload, done) => {
 
 
 /* 
-Passaport (probabilmente intendi Passport.js) può essere configurato sia con sessioni che con JWT (JSON Web Tokens), a seconda delle esigenze dell'applicazione.
+Passaport  può essere configurato sia con sessioni che con JWT (JSON Web Tokens), a seconda delle esigenze dell'applicazione.
 
 Sessioni:
 
 Utilizza sessioni server-side per mantenere lo stato dell'utente.
 Richiede l'uso di un middleware di sessione come express-session.
 Buono per applicazioni dove è accettabile mantenere le sessioni sul server.
+
 JWT:
 
 Utilizza token per autenticare le richieste client-side.
