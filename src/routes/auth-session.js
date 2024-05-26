@@ -10,6 +10,12 @@ const passport = require("../config/passport")
 const User = require('../models/user')
 const bcrypt = require('bcrypt');
 
+/* function getBaseUrl(req, res, next) {
+	  const baseUrl = req.originalUrl.replace(req.path, '');
+	  req.baseUrl = baseUrl;
+	  next();
+} */
+
 function checkAuth(req, res, next) {
 	if (req.session.passport) { next(); }
 	else {

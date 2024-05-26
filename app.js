@@ -12,7 +12,7 @@ const app = express();
 const { connectDirectDB } = require("./src/connections/connectMongoDB");
 const { connectMongoose } = require("./src/connections/connectMongoose");
 const { peopleRouter } = require("./src/routes/api-resource");
-const passportRouter = require("./src/routes/demo-passport");
+const authSessionRouter = require("./src/routes/auth-session");
 const expressLayouts = require('express-ejs-layouts');
 const demoJwtRouter = require("./src/routes/demo-auth-jwt");
 const directLogger = require("./src/middlewares/directLogger");
@@ -50,7 +50,7 @@ app.use(msg_flash);
 
 // Router Middleware
 app.use("/api/people", peopleRouter);
-app.use("/auth", passportRouter);
+app.use("/auth", authSessionRouter);
 //app.use("/auth/jwt", demoJwtRouter);
 app.use("/", indexRouter); // A causa della rotta 404 deve stare per pernultimo
 
