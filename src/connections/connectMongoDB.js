@@ -1,3 +1,6 @@
+// Modulo Deprecato. Funziona, ma non è utilizzato.
+// Al suo posto viene usato ./connections/connectMongoDB.js
+
 const { MongoClient } = require("mongodb");
 const { mongoURI } = require('../config/config');
 const mongoClient = new MongoClient(mongoURI);
