@@ -74,7 +74,7 @@ router.get('/delete-user', checkAuth, (req, res) => {
 // --- Rotte di autenticazione ---
 
 // Gestisce il login dell'utente.
-router.post('/login', passport.authenticate('local-auth', {
+router.post('/login', passport.authenticate('local', {
 	successRedirect: '/auth/user',
 	failureRedirect: '/auth/login',
 	failureFlash: true

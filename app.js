@@ -12,9 +12,9 @@ const app = express();
 const { connectDirectDB } = require("./src/connections/connectMongoDB");
 const { connectMongoose } = require("./src/connections/connectMongoose");
 const { peopleRouter } = require("./src/routes/api-resource");
-const authSessionRouter = require("./src/routes/auth-session");
+const authSessionRouter = require("./src/routes/auth");
+const authJwtRouter = require("./src/api/auth");
 const expressLayouts = require('express-ejs-layouts');
-const demoJwtRouter = require("./src/routes/demo-auth-jwt");
 const directLogger = require("./src/middlewares/directLogger");
 const indexRouter = require("./src/routes/index");
 const authSession = require("./src/middlewares/auth-session");
@@ -51,10 +51,9 @@ app.use(msg_flash);
 // Router Middleware
 app.use("/api/people", peopleRouter);
 app.use("/auth", authSessionRouter);
+app.use("/api/auth", authJwtRouter);
 //app.use("/auth/jwt", demoJwtRouter);
 app.use("/", indexRouter); // A causa della rotta 404 deve stare per pernultimo
-
-
 app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 
 connectMongoose();

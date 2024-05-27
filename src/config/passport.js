@@ -3,9 +3,34 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const jwt = require('jsonwebtoken');
+const secretKeyJwt = require('../config/config');
+
+
+// Configurazione della strategia JWT
+const cookieExtractor = req => {
+    let jwt = null
+    if (req && req.cookies) {
+        jwt = req.cookies['jwt']
+    }
+    return jwt
+}
+
+const jwtOpts = {
+    jwtFromRequest: cookieExtractor,
+    secretOrKey: secretKeyJwt
+};
+
+passport.use('jwt', new JwtStrategy(jwtOpts, (payload, done) => {
+    const { expiration } = payload
+    if (Date.now() > expiration) {
+        return done('Unauthorized', false)
+    }
+    return done(null, payload)
+}))
+
 
 // Definizione della strategia locale con Passport
-passport.use('local-auth', new LocalStrategy(async (username, password, done) => {
+passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
         const user = await User.findOne({ username });
         if (!user) {
@@ -39,24 +64,6 @@ passport.deserializeUser(async function (id, done) {
 });
 
 module.exports = passport;
-/* 
-
-// Configurazione della strategia JWT
-const jwtOpts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET
-};
-
-passport.use(new JwtStrategy(jwtOpts, (jwt_payload, done) => {
-  const user = users.find(u => u.id === jwt_payload.id);
-  if (user) {
-    return done(null, user);
-  } else {
-    return done(null, false);
-  }
-}));
- */
-
 
 
 /* 
