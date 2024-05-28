@@ -1,6 +1,5 @@
 // npm Modules
 const cookieParser = require("cookie-parser");
-const createError = require("http-errors");
 const favicon = require('serve-favicon');
 const express = require("express");
 const morgan = require("morgan");
@@ -9,7 +8,6 @@ const flash = require('connect-flash');
 const app = express();
 
 // My Modules
-const { connectDirectDB } = require("./src/connections/connectMongoDB");
 const { connectMongoose } = require("./src/connections/connectMongoose");
 const { peopleRouter } = require("./src/routes/api-resource");
 const authSessionRouter = require("./src/routes/auth");
@@ -38,22 +36,20 @@ app.use("/public", staticFiles); // Imposto il midlleware static partendo da /pu
 app.use(favicon(pathFavicon)); // Servire il file favicon.ico
 app.use(expressLayouts);
 app.use(directLogger);
-//app.use(morgan("dev"));
-app.use(authSession)     // Va posizionato il prima possibile, crea una sessione e la salva nel DB
 app.use(urlExtended);    // Consente di accedere a req.body
 app.use(express.json()); // Consente di accedere a req.json
 app.use(cookieParser()); // Consente di accedere a req.cookie
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-app.use(msg_flash);
+app.use('/ssr', authSession)     // Va posizionato il prima possibile, crea una sessione e la salva nel DB
+app.use('/ssr', passport.initialize());
+app.use('/ssr', passport.session());
+app.use('/ssr', flash());
+app.use('/ssr', msg_flash);
 
 // Router Middleware
 app.use("/api/people", peopleRouter);
-app.use("/auth", authSessionRouter);
+app.use("/ssr/auth", authSessionRouter);
 app.use("/api/auth", authJwtRouter);
-//app.use("/auth/jwt", demoJwtRouter);
-app.use("/", indexRouter); // A causa della rotta 404 deve stare per pernultimo
+app.use("/ssr", indexRouter); // A causa della rotta 404 deve stare per pernultimo
 app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 
 connectMongoose();

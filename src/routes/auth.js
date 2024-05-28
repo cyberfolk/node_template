@@ -10,7 +10,7 @@ function checkAuth(req, res, next) {
 	if (req.session.passport) { next(); }
 	else {
 		req.flash('warning', 'Devi essere loggato per accedere a questa risorsa.');
-		res.redirect('/auth/login');
+		res.redirect('/ssr/auth/login');
 	}
 }
 
@@ -19,7 +19,7 @@ function checkNotAuth(req, res, next) {
 	if (!req.session.passport) { next(); }
 	else {
 		req.flash('warning', 'Sei già loggato.');
-		res.redirect('/auth/user');
+		res.redirect('/ssr/auth/user');
 	}
 }
 
@@ -29,13 +29,13 @@ async function findUser(req, res, next) {
 		const user = await User.findById(req.session.passport.user);
 		if (!user) {
 			req.flash('error', 'Utente non trovato.');
-			return res.redirect('/auth/user');
+			return res.redirect('/ssr/auth/user');
 		}
 		req.user = user;
 		next();
 	} catch (error) {
 		req.flash('error', 'Errore durante la ricerca dell\'utente.');
-		res.redirect('/auth/login');
+		res.redirect('/ssr/auth/login');
 	}
 }
 
@@ -43,40 +43,40 @@ async function findUser(req, res, next) {
 
 // Mostra la pagina di login.
 router.get('/login', checkNotAuth, (req, res) => {
-	res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
+	res.render('./auth/login', { title: 'Login', layout: 'layouts/main' });
 });
 
 // Mostra la pagina del profilo utente.
 router.get('/user', checkAuth, findUser, (req, res) => {
-	res.render('./auth/user', { title: 'User', layout: 'layouts/main-layout', username: req.user.username });
+	res.render('./auth/user', { title: 'User', layout: 'layouts/main', username: req.user.username });
 });
 
 // Mostra la pagina per cambiare la password.
 router.get('/change-password', checkAuth, (req, res) => {
-	res.render('./auth/change-password', { title: 'Change Password', layout: 'layouts/main-layout' });
+	res.render('./auth/change-password', { title: 'Change Password', layout: 'layouts/main' });
 });
 
 // Mostra la pagina per cambiare l'username.
 router.get('/change-username', checkAuth, (req, res) => {
-	res.render('./auth/change-username', { title: 'Change Username', layout: 'layouts/main-layout' });
+	res.render('./auth/change-username', { title: 'Change Username', layout: 'layouts/main' });
 });
 
 // Mostra la pagina di registrazione.
 router.get('/register', checkNotAuth, (req, res) => {
-	res.render('./auth/register', { title: 'Registrazione', layout: 'layouts/main-layout' });
+	res.render('./auth/register', { title: 'Registrazione', layout: 'layouts/main' });
 });
 
 // Mostra la pagina per eliminare l'utente.
 router.get('/delete-user', checkAuth, (req, res) => {
-	res.render('./auth/delete-user', { title: 'Delete User', layout: 'layouts/main-layout' });
+	res.render('./auth/delete-user', { title: 'Delete User', layout: 'layouts/main' });
 });
 
 // --- Rotte di autenticazione ---
 
 // Gestisce il login dell'utente.
 router.post('/login', passport.authenticate('local', {
-	successRedirect: '/auth/user',
-	failureRedirect: '/auth/login',
+	successRedirect: '/ssr/auth/user',
+	failureRedirect: '/ssr/auth/login',
 	failureFlash: true
 }));
 
@@ -93,7 +93,7 @@ router.get('/logout', checkAuth, (req, res) => {
 				return res.status(500).send('Errore nella distruzione della sessione');
 			}
 			res.clearCookie('connect.sid');
-			res.render('./auth/login', { title: 'Login', layout: 'layouts/main-layout' });
+			res.render('./auth/login', { title: 'Login', layout: 'layouts/main' });
 		});
 	});
 });
@@ -107,7 +107,7 @@ router.post('/change-password', checkAuth, findUser, async (req, res) => {
 	} catch (error) {
 		req.flash('error', error.message);
 	}
-	res.redirect('/auth/user');
+	res.redirect('/ssr/auth/user');
 });
 
 // Gestisce la richiesta di cambio nome utente.
@@ -116,7 +116,7 @@ router.post('/change-username', checkAuth, findUser, async (req, res) => {
 	req.user.username = newUsername;
 	await req.user.save();
 	req.flash('success', 'Nome utente cambiato con successo.');
-	res.redirect('/auth/user');
+	res.redirect('/ssr/auth/user');
 });
 
 // Gestisce la registrazione di un nuovo utente.
@@ -125,11 +125,11 @@ router.post('/register', checkNotAuth, async (req, res) => {
 		const { username, password } = req.body;
 		await User.register(username, password);
 		req.flash('success', 'Registrazione completata con successo. Puoi effettuare il login.');
-		res.redirect('/auth/login');
+		res.redirect('/ssr/auth/login');
 	} catch (error) {
 		console.error('Errore durante la registrazione:', error);
 		req.flash('error', error.message);
-		res.redirect('/auth/register');
+		res.redirect('/ssr/auth/register');
 	}
 });
 
@@ -138,10 +138,10 @@ router.post('/delete-user', checkAuth, findUser, async (req, res) => {
 	try {
 		await User.findByIdAndDelete(req.user._id);
 		req.flash('success', 'Utente eliminato con successo.');
-		res.redirect('/auth/logout');
+		res.redirect('/ssr/auth/logout');
 	} catch (error) {
 		req.flash('error', 'Errore durante l\'eliminazione dell\'utente.');
-		res.redirect('/auth/user');
+		res.redirect('/ssr/auth/user');
 	}
 });
 
