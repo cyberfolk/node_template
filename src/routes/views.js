@@ -25,9 +25,4 @@ router.get("/session-info", (req, res) => {
   res.render('session-info', { title: 'Session-Info', sessionInfo: strInfo, layout: 'layouts/main' });
 })
 
-// Middleware "catch-all" per gestire le rotte non definite
-router.use((req, res, next) => {
-  reqStr = `${req.method} ${req.url}`;
-  res.render('404', { title: '404', reqStr: reqStr, layout: 'layouts/main' });
-})
 module.exports = router;

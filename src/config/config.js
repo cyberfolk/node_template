@@ -10,7 +10,7 @@
 const path = require('path');
 
 require('dotenv').config({
-    path: `.env.${process.env.NODE_ENV}`
+    path: `src/config/.env.${process.env.NODE_ENV}`
 });
 
 // Recupero le variabili d'ambiente

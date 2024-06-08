@@ -9,12 +9,11 @@ const app = express();
 
 // My Modules
 const { connectMongoose } = require("./src/connections/connectMongoose");
-const { peopleRouter } = require("./src/routes/api-resource");
-const authSessionRouter = require("./src/routes/auth");
 const authJwtRouter = require("./src/api/auth");
 const expressLayouts = require('express-ejs-layouts');
 const directLogger = require("./src/middlewares/directLogger");
-const indexRouter = require("./src/routes/index");
+const ssrIndexRouter = require("./src/routes/_index");
+const apiIndexRouter = require("./src/api/_index");
 const authSession = require("./src/middlewares/auth-session");
 const errorCheck = require("./src/middlewares/errorCheck");
 const passport = require("./src/config/passport");
@@ -23,7 +22,7 @@ const msg_flash = require('./src/middlewares/msg_flash');
 // Variable Setup
 const pathDirPublic = path.join(__dirname, "public"); // path della dir 'public' realtivo alla root project
 const pathDirViews = path.join(__dirname, "views"); // path della dir 'views' realtivo alla root project
-const pathFavicon = path.join(__dirname, 'favicon.ico'); // path della file 'favicon' realtivo alla root project
+const pathFavicon = path.join(__dirname, '/public/favicon.ico'); // path della file 'favicon' realtivo alla root project
 const staticFiles = express.static(pathDirPublic); // "middleware statico" per servire i file statici di 'public'
 const urlExtended = express.urlencoded({ extended: true }) // middleware per analisi dati dai form HTML con POST.
 
@@ -46,10 +45,9 @@ app.use('/ssr', flash());
 app.use('/ssr', msg_flash);
 
 // Router Middleware
-app.use("/api/people", peopleRouter);
-app.use("/ssr/auth", authSessionRouter);
 app.use("/api/auth", authJwtRouter);
-app.use("/ssr", indexRouter); // A causa della rotta 404 deve stare per pernultimo
+app.use("/api", apiIndexRouter);
+app.use("/ssr", ssrIndexRouter); // A causa della rotta 404 deve stare per pernultimo
 app.use(errorCheck); // Controllo errori. Da posizionare per ultimo.
 
 connectMongoose();

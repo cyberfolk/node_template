@@ -1,10 +1,10 @@
 /*********************************************************************************************
  * Separare SERVER e APP:                                                                    *
  * app.js --> Definisce route, middleware e altre logiche specifiche dell'applicazione.      *
- * bin/www -> Avvia server HTTP. Configura porta d'ascolto e gestisce errori di avvio.       *
+ * server.js -> Avvia server HTTP. Configura porta d'ascolto e gestisce errori di avvio.     *
  *********************************************************************************************/
 
-const app = require("../app");
+const app = require("./app");
 const debug = require("debug")("node_template:server");
 const http = require("http");
 

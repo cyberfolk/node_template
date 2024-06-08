@@ -55,12 +55,12 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env.dev
-.env.prod
+/src/config/.env.dev
+/src/config/.env.prod
 
 # next.js build output
 .next
 
 # rsa
-rsa.private
-rsa.public
+/src/config/rsa.private
+/src/config/rsa.public

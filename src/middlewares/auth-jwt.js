@@ -84,8 +84,8 @@ function createJwtMiddleware(algorithm, expiresIn, secretKey) {
 function getKeyPair(algorithm, secretKey) {
     let privateKey, publicKey;
     if (algorithm === 'RS256') {
-        privateKey = fs.readFileSync(path.join(process.cwd(), 'rsa.private'), 'utf8');
-        publicKey = fs.readFileSync(path.join(process.cwd(), 'rsa.public'), 'utf8');
+        privateKey = fs.readFileSync(path.join(process.cwd(), 'src/config/rsa.private'), 'utf8');
+        publicKey = fs.readFileSync(path.join(process.cwd(), 'src/config/rsa.public'), 'utf8');
     } else {
         privateKey = publicKey = secretKey; // Per algoritmi simmetrici, usa la stessa chiave segreta per entrambe
     }
