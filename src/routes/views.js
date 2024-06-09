@@ -2,15 +2,15 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', (req, res) => {
-  res.render('home', { title: 'Home', layout: 'layouts/main' });
+  res.render('pages/home', { title: 'Home', layout: 'layouts/main' });
 });
 
 router.get('/home', (req, res) => {
-  res.render('home', { title: 'Home', layout: 'layouts/main' });
+  res.render('pages/home', { title: 'Home', layout: 'layouts/main' });
 });
 
 router.get('/about', (req, res) => {
-  res.render('about', { title: 'About', layout: 'layouts/main' });
+  res.render('pages/about', { title: 'About', layout: 'layouts/main' });
 });
 
 router.get("/session-info", (req, res) => {
@@ -22,7 +22,7 @@ router.get("/session-info", (req, res) => {
   };
 
   const strInfo = JSON.stringify(info, null, 2);
-  res.render('session-info', { title: 'Session-Info', sessionInfo: strInfo, layout: 'layouts/main' });
+  res.render('pages/session-info', { title: 'Session-Info', sessionInfo: strInfo, layout: 'layouts/main' });
 })
 
 module.exports = router;

@@ -43,32 +43,32 @@ async function findUser(req, res, next) {
 
 // Mostra la pagina di login.
 router.get('/login', checkNotAuth, (req, res) => {
-	res.render('./auth/login', { title: 'Login', layout: 'layouts/main' });
+	res.render('pages/auth/login', { title: 'Login', layout: 'layouts/main' });
 });
 
 // Mostra la pagina del profilo utente.
 router.get('/user', checkAuth, findUser, (req, res) => {
-	res.render('./auth/user', { title: 'User', layout: 'layouts/main', username: req.user.username });
+	res.render('pages/auth/user', { title: 'User', layout: 'layouts/main', username: req.user.username });
 });
 
 // Mostra la pagina per cambiare la password.
 router.get('/change-password', checkAuth, (req, res) => {
-	res.render('./auth/change-password', { title: 'Change Password', layout: 'layouts/main' });
+	res.render('pages/auth/change-password', { title: 'Change Password', layout: 'layouts/main' });
 });
 
 // Mostra la pagina per cambiare l'username.
 router.get('/change-username', checkAuth, (req, res) => {
-	res.render('./auth/change-username', { title: 'Change Username', layout: 'layouts/main' });
+	res.render('pages/auth/change-username', { title: 'Change Username', layout: 'layouts/main' });
 });
 
 // Mostra la pagina di registrazione.
 router.get('/register', checkNotAuth, (req, res) => {
-	res.render('./auth/register', { title: 'Registrazione', layout: 'layouts/main' });
+	res.render('pages/auth/register', { title: 'Registrazione', layout: 'layouts/main' });
 });
 
 // Mostra la pagina per eliminare l'utente.
 router.get('/delete-user', checkAuth, (req, res) => {
-	res.render('./auth/delete-user', { title: 'Delete User', layout: 'layouts/main' });
+	res.render('pages/auth/delete-user', { title: 'Delete User', layout: 'layouts/main' });
 });
 
 // --- Rotte di autenticazione ---
@@ -93,7 +93,7 @@ router.get('/logout', checkAuth, (req, res) => {
 				return res.status(500).send('Errore nella distruzione della sessione');
 			}
 			res.clearCookie('connect.sid');
-			res.render('./auth/login', { title: 'Login', layout: 'layouts/main' });
+			res.render('pages/auth/login', { title: 'Login', layout: 'layouts/main' });
 		});
 	});
 });
